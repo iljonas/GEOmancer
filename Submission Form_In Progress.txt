@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<style>
+    .header{border:1px solid black;color:#000;font-weight:1000;text-align:center;height:50px;}
+    .dataRow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
+</style>
+
+<table style="border-spacing:0;" id="Table1">
+	<thead>
+		<tr>
+        	<td class="header">Sample ID</td>
+			<td class="header">Group</td>
+			<td class="header">Species</td>
+			<td class="header">Strain</td>
+			<td class="header">Treatment</td>
+			<td class="header">Dosage</td>
+			<td class="header">Exposure Time</td>
+			<td class="header">Growth Phase</td>
+			<td class="header">Other</td>
+		</tr>
+	</thead>
+	<tbody>
+		<script type = "text/javascript">
+		for (i=0;i<4;i++){
+			document.write('<tr>')
+            document.write('	<td class="dataRow" id="sample id">ID Goes Here</td>')
+            document.write('	<td class="dataRow" id="group"><select style="width: 100px">')
+			document.write('		<option value="Control">Control')
+			document.write('		<option value="Test">Test')
+			document.write('		<option value="Neither" SELECTED>Neither')
+			document.write('	</select></td>')
+			document.write('	<td class="dataRow"><input type="text" id="species" size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="strain" size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="treatment" size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="dosage" size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="exposure time" size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="growth phase" size="10"></td>')
+			document.write('	<td class="dataRow""><input type="text" id="other size="10"></td>')
+			document.write('</tr>')
+}
+		</script>
+	</tbody>
+</table>
+<p><span id='display'></span></p>
+<button onclick="exportTableToCSV('members.csv');">Export</button>
+<script>
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("tbody tr");
+    
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, select, input");
+        for (var j = 0; j < cols.length; j++) {
+        	if(cols[j].value != undefined)
+            	row.push(cols[j].value);
+            else if(cols[j].innerText != "")
+            	row.push(cols[j].innerText);
+        }
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function showInput(){
+	document.getElementById("display").innerHTML = document.getElementById("group").innerText;
+}
+</script>
+
+</body>
+</html>
