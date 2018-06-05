@@ -25,8 +25,8 @@
 		<script type = "text/javascript">
 		for (i=0;i<4;i++){
 			document.write('<tr>')
-            document.write('	<td class="dataRow" id="sample id">ID Goes Here</td>')
-            document.write('	<td class="dataRow" id="group"><select style="width: 100px">')
+            document.write('	<td class="dataRow" id="sample id" name="static">Sample ID Here</td>')
+            document.write('	<td class="dataRow"><select id="group" style="width: 100px">')
 			document.write('		<option value="Control">Control')
 			document.write('		<option value="Test">Test')
 			document.write('		<option value="Neither" SELECTED>Neither')
@@ -37,7 +37,7 @@
 			document.write('	<td class="dataRow"><input type="text" id="dosage" size="10"></td>')
 			document.write('	<td class="dataRow"><input type="text" id="exposure time" size="10"></td>')
 			document.write('	<td class="dataRow"><input type="text" id="growth phase" size="10"></td>')
-			document.write('	<td class="dataRow""><input type="text" id="other size="10"></td>')
+			document.write('	<td class="dataRow"><input type="text" id="other" size="10"></td>')
 			document.write('</tr>')
 }
 		</script>
@@ -68,31 +68,41 @@ function downloadCSV(csv, filename) {
     // Add the link to DOM
     document.body.appendChild(downloadLink);
 
-    // Click download link
+    // Click downljavascript:;oad link
     downloadLink.click();
 }
 
 function exportTableToCSV(filename) {
     var csv = [];
     var rows = document.querySelectorAll("tbody tr");
-    
+    var tbl = [];
+    var cellVal;
+//    for (var r = 0; r < rows.length; r++){
+//    	tbl[r] = rows[r].querySelectorAll("td, select, input");
+//    }
     for (var i = 0; i < rows.length; i++) {
         var row = [], cols = rows[i].querySelectorAll("td, select, input");
-        for (var j = 0; j < cols.length; j++) {
-        	if(cols[j].value != undefined)
-            	row.push(cols[j].value);
-            else if(cols[j].innerText != "")
-            	row.push(cols[j].innerText);
+        showInput(cols.length)
+        for (var j = 0; j < cols.length; j++) {        	
+        	if(cols[j].value == "") {
+            	cellVal = "NA";
+            } else if(cols[j].value == undefined && cols[j].innerText.length > 0) {
+            	cellVal = cols[j].innerText;
+            } else if(cols[j].value != "") {
+            	cellVal = cols[j].value;
+            }
+            if(cellVal != undefined)
+               row.push(cellVal);
         }
-        csv.push(row.join(","));        
+       csv.push(row.join());        
     }
 
     // Download CSV file
-    downloadCSV(csv.join("\n"), filename);
+   downloadCSV(csv.join("\n"), filename);
 }
 
-function showInput(){
-	document.getElementById("display").innerHTML = document.getElementById("group").innerText;
+function showInput(x){
+	document.getElementById("display").innerHTML = x;//document.getElementById("group").value;
 }
 </script>
 
