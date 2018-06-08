@@ -250,9 +250,10 @@ function exportTableToCSV(filename) {
 function validateData(){
 	var errorText = "";
 	var inputList = document.querySelectorAll("input");
-	var samplesFound = 0;
-	var sampList = [];
+	var sampleIndex = 0;
+	var sampList = "";
 	var reg = new RegExp("GSM1", "gi");
+	
 	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
 		errorText = "Please enter the Study ID and Platform ID";
 	} else if(!document.getElementById("study id").value.match("GSE[0-9]+$")) {
@@ -265,17 +266,18 @@ function validateData(){
 		//If all values in Table1 pass, check Table2 for errors in the sample ID column		
 		for(var i = 0; i < inputList.length; i++){
 			if(inputList[i].id == "sample id"){
+				sampleIndex++;
 				//First check for samples that don't match the correct format and show where the error lies
 				if(!inputList[i].value.match("GSM[0-9]+$")){
-					errorText = "Please ensure the sample ID on row " + (sampList.length + 1) + " is in this format: GSM12345";
+					errorText = "Please ensure the sample ID on row " + sampleIndex + " is in this format: GSM12345";
 					break;
 				//Then check if sample matches exactly a previous sample"
-				} else if(sampList.join().match(RegExp(inputList[i].value, "g"))) {
-					errorText = "Sample ID on row " + (sampList.length + 1) + " is a duplicate of a previous sample";
+				} else if(sampList.match(RegExp(inputList[i].value, "g"))) {
+					errorText = "Sample ID on row " + sampleIndex + " is a duplicate of a previous sample";
 					break;
 				}
-                //If both checks pass, append the sample to the list and continue validating
-				sampList.push(inputList[i].value);
+				//If both checks pass, append the sample to the string and continue validating
+				sampList += inputList[i].value;
 			}
 		}
 	}
