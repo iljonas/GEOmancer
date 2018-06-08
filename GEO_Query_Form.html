@@ -4,30 +4,30 @@
 
 <style type='text/css'>
 	.sampleheader{border:1px solid black;color:#000;font-weight:1000;text-align:center;height:50px;}
-    .samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
-    .mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
-    .mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
+	.samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
+	.mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
+	.mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
 	.warning{background-color:yellow}
 </style>
 
 <table id="Table1">
 	<tr>
-		<label><td class="mainheader">Study ID: </td>
+		<label><td class="mainheader">Study ID:</td>
 		<td class="mainrow"><input type="text" id="study id" size="8"></td>
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">Platform ID: </td>
+		<label><td class="mainheader">Platform ID:</td>
 		<td class="mainrow"><input type="text" id="platform id" size="8"></td>
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">Outside study controls: </td>
+		<label><td class="mainheader">Outside study controls:</td>
 		<td class="mainrow"><input type="text" id="study controls" size="30"></td>
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">Difference Calculation: </td>
+		<label><td class="mainheader">Difference Calculation:</td>
 		<td class="mainrow"><select id="diff calc">
 			<option value="Subtraction" SELECTED>Subtraction
 			<option value="Log2">Log Base 2
@@ -35,7 +35,7 @@
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">Comparison Calculation: </td>
+		<label><td class="mainheader">Comparison Calculation:</td>
 		<td class="mainrow"><select id="comp calc">
 			<option value="Mean" SELECTED>Mean
 			<option value="Sum">Sum
@@ -43,12 +43,12 @@
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">In-column Delimiter: </td>
+		<label><td class="mainheader">In-column Delimiter:</td>
 		<td class="mainrow"><input type="text" id="delim" size="2"></td>
 		</label>
 	</tr>
 	<tr>
-		<label><td class="mainheader">Add N Samples: </td>
+		<label><td class="mainheader">Add N Samples:</td>
 		<td class="mainrow"><input type="number" id="sample count" size="4"></td>
 		</label>
 	</tr>
@@ -98,7 +98,6 @@
 
 <button onclick="validateData();">Export</button>
 <script>
-
 function addRows(rowNum){
 	var table = document.getElementById("Table2");
 	var tr, td, cell;
@@ -132,7 +131,6 @@ function addRows(rowNum){
 		updateAttributes();
 	}
 }
-
 function updateAttributes(){
 	var response = document.querySelectorAll('select, input');
 	var background = document.getElementsByTagName('td');
@@ -190,40 +188,30 @@ function updateAttributes(){
 		}
 	}
 }
-
 function removeRow(){
 	var nrow = document.getElementById("Table2").rows.length
 	if(nrow > 2){
 		document.getElementById("Table2").deleteRow(nrow - 1);
 	}
 }
-
 function downloadCSV(csv, filename) {
 	var csvFile;
 	var downloadLink;
-
 	// CSV file
 	csvFile = new Blob([csv], {type: "text/csv"});
-
 	// Download link
 	downloadLink = document.createElement("a");
-
 	// File name
 	downloadLink.download = filename;
-
 	// Create a link to the file
 	downloadLink.href = window.URL.createObjectURL(csvFile);
-
 	// Hide download link
 	downloadLink.style.display = "none";
-
 	// Add the link to DOM
 	document.body.appendChild(downloadLink);
-
-	// Click downljavascript:;oad link
+	// Click download link
 	downloadLink.click();
 }
-
 function exportTableToCSV(filename) {
 	var csv = [];
 	var data = document.querySelectorAll("tr, select, input");
@@ -257,32 +245,39 @@ function exportTableToCSV(filename) {
 		}
 	}
 	// Download CSV file
-	downloadCSV(csv.join("\n"), filename);
+	downloadCSV(csv.join("\r\n"), filename);
 }
-
 function validateData(){
 	var errorText = "";
 	var inputList = document.querySelectorAll("input");
 	var samplesFound = 0;
-  
-	for(var i = 0; i < inputList.length; i++){
-		if(inputList[i].id == "sample id"){
-			samplesFound++;
-			if(!inputList[i].value.startsWith("GSM")){
-				errorText = "Please ensure the sample ID on row " + samplesFound + " is in this format: GSM12345";
-				break;
-			}
-		}
-	}
- 
+	var sampList = [];
+	var reg = new RegExp("GSM1", "gi");
 	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
 		errorText = "Please enter the Study ID and Platform ID";
-	} else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
+	} else if(!document.getElementById("study id").value.match("GSE[0-9]+$")) {
 		errorText = "Please ensure Study ID is in this format: GSE12345";
-	} else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
+	} else if(!document.getElementById("platform id").value.match("GPL[0-9]+$")) {
 		errorText = "Please ensure Platform ID is in this format: GPL12345";
 	} else if(document.getElementById("delim").value.length > 1) {
 		errorText = "Please enter a one character delimiter or leave blank";
+	} else {
+		//If all values in Table1 pass, check Table2 for errors in the sample ID column		
+		for(var i = 0; i < inputList.length; i++){
+			if(inputList[i].id == "sample id"){
+				//First check for samples that don't match the correct format and show where the error lies
+				if(!inputList[i].value.match("GSM[0-9]+$")){
+					errorText = "Please ensure the sample ID on row " + (sampList.length + 1) + " is in this format: GSM12345";
+					break;
+				//Then check if sample matches exactly a previous sample"
+				} else if(sampList.join().match(RegExp(inputList[i].value, "g"))) {
+					errorText = "Sample ID on row " + (sampList.length + 1) + " is a duplicate of a previous sample";
+					break;
+				}
+                //If both checks pass, append the sample to the list and continue validating
+				sampList.push(inputList[i].value);
+			}
+		}
 	}
 	if (errorText != "") {
 		document.getElementById("error message").innerHTML = errorText;
@@ -292,7 +287,6 @@ function validateData(){
 	}
 }             
 </script>
-
 
 </body>
 </html>
