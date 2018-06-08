@@ -7,7 +7,7 @@
     .samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
     .mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
     .mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
-  .warning{background-color:yellow}
+	.warning{background-color:yellow}
 </style>
 
 <table id="Table1">
@@ -55,15 +55,15 @@
 </table>
 
 <div>
-  <button onclick="addRows(document.getElementById('sample count').value);">Add Samples</button>
-  <button onclick="removeRow();">Delete Last Sample</button>
+	<button onclick="addRows(document.getElementById('sample count').value);">Add Samples</button>
+	<button onclick="removeRow();">Delete Last Sample</button>
 </div>
 
 
 <table id="Table2" style="hidden">
 	<thead>
 		<tr>
-      <td class="sampleheader">Sample_ID</td>
+			<td class="sampleheader">Sample_ID</td>
 			<td class="sampleheader">Group</td>
 			<td class="sampleheader">Species</td>
 			<td class="sampleheader">Strain</td>
@@ -100,197 +100,196 @@
 <script>
 
 function addRows(rowNum){
-  var table = document.getElementById("Table2");
-  var tr, td, cell;
+	var table = document.getElementById("Table2");
+	var tr, td, cell;
   
 	for(var i = 0; i < rowNum; i++){
-  	tr = document.createElement("tr");
-  	for(var j = 0; j < 9; j++){
+		tr = document.createElement("tr");
+		for(var j = 0; j < 9; j++){
 			td = document.createElement("td");
-   //		td.setAttributeNode(attClass);
-   		if(j == 1){
-      	cell = document.createElement("select");
-        var opt1 = document.createElement("option");
-        var opt2 = document.createElement("option");
-        var opt3 = document.createElement("option");
-        cell.appendChild(opt1);
-        cell.appendChild(opt2);
-        cell.appendChild(opt3);
-        opt1.value = "Control";
-       	opt1.innerText = "Control";
-        opt2.value = "Test";
-        opt2.innerText = "Test";
-        opt3.value = "Neither";
-        opt3.innerText = "Neither";
-      } else {
-        cell = document.createElement("input");
-      }    
+			if(j == 1){
+				cell = document.createElement("select");
+				var opt1 = document.createElement("option");
+				var opt2 = document.createElement("option");
+				var opt3 = document.createElement("option");
+				cell.appendChild(opt1);
+				cell.appendChild(opt2);
+				cell.appendChild(opt3);
+				opt1.value = "Control";
+				opt1.innerText = "Control";
+				opt2.value = "Test";
+				opt2.innerText = "Test";
+				opt3.value = "Neither";
+				opt3.innerText = "Neither";
+			} else {
+				cell = document.createElement("input");
+			}    
 			td.appendChild(cell);
-      tr.appendChild(td);
+			tr.appendChild(td);
       
-    }
-    table.appendChild(tr);
-    
-    updateAttributes();
-  }
+		}
+		table.appendChild(tr);
+		updateAttributes();
+	}
 }
 
 function updateAttributes(){
-  var response = document.querySelectorAll('select, input');
+	var response = document.querySelectorAll('select, input');
 	var background = document.getElementsByTagName('td');
-  var allOpt = document.getElementsByTagName('option');
-  for (var j=0; j < background.length; j++){
-  	if(j >= 23){
-    	background[j].setAttribute("class", "samplerow");
-    }
- 	}
-  var idSwitch;
+	var allOpt = document.getElementsByTagName('option');
+	for (var j=0; j < background.length; j++){
+		if(j >= 23){
+			background[j].setAttribute("class", "samplerow");
+		}
+	}
+	var idSwitch;
 	for (var i=0; i < response.length; i++) {
-  	if(response[i].id == ""){
-    	switch((i - 16) % 9){
-      	case 0:
-        	idSwitch = "sample id";
-          break;
-        case 1:
-        	idSwitch = "group";
-          break;
-        case 2:
-        	idSwitch = "species";
-          break;
-        case 3:
-        	idSwitch = "strain";
-          break;
-        case 4:
-        	idSwitch = "treatment";
-          break;
-        case 5:
-        	idSwitch = "dosage";
-          break;
-        case 6:
-        	idSwitch = "exposure time";
-          break;
-        case 7:
-        	idSwitch = "growth phase";
-          break;
-        case 8:
-        	idSwitch = "other";
-          break;
-      }
-      response[i].setAttribute("id", idSwitch);
-      if((i - 16) % 9 == 1) {
-      	response[i].setAttribute("style", "width: 100px");
-      } else {
-      	response[i].setAttribute("size", "10");
-        response[i].setAttribute("input", "text");
-      }
-    }
+		if(response[i].id == ""){
+			switch((i - 16) % 9){
+				case 0:
+					idSwitch = "sample id";
+					break;
+				case 1:
+					idSwitch = "group";
+					break;
+				case 2:
+					idSwitch = "species";
+					break;
+				case 3:
+					idSwitch = "strain";
+					break;
+				case 4:
+					idSwitch = "treatment";
+					break;
+				case 5:
+					idSwitch = "dosage";
+					break;
+				case 6:
+					idSwitch = "exposure time";
+					break;
+				case 7:
+					idSwitch = "growth phase";
+					break;
+				case 8:
+					idSwitch = "other";
+					break;
+			}
+			response[i].setAttribute("id", idSwitch);
+			if((i - 16) % 9 == 1) {
+				response[i].setAttribute("style", "width: 100px");
+			} else {
+				response[i].setAttribute("size", "10");
+				response[i].setAttribute("input", "text");
+			}
+		}
 	}
   
 	for (var l = 0; l < allOpt.length; l++){
-  	if(allOpt[l].getAttribute("value") == "Neither"){
-    	allOpt[l].setAttribute("SELECTED", true);
-    }
-  }
+		if(allOpt[l].getAttribute("value") == "Neither"){
+			allOpt[l].setAttribute("SELECTED", true);
+		}
+	}
 }
 
 function removeRow(){
 	var nrow = document.getElementById("Table2").rows.length
-	document.getElementById("Table2").deleteRow(nrow - 1);
+	if(nrow > 2){
+		document.getElementById("Table2").deleteRow(nrow - 1);
+	}
 }
 
 function downloadCSV(csv, filename) {
-    var csvFile;
-    var downloadLink;
+	var csvFile;
+	var downloadLink;
 
-    // CSV file
-    csvFile = new Blob([csv], {type: "text/csv"});
+	// CSV file
+	csvFile = new Blob([csv], {type: "text/csv"});
 
-    // Download link
-    downloadLink = document.createElement("a");
+	// Download link
+	downloadLink = document.createElement("a");
 
-    // File name
-    downloadLink.download = filename;
+	// File name
+	downloadLink.download = filename;
 
-    // Create a link to the file
-    downloadLink.href = window.URL.createObjectURL(csvFile);
+	// Create a link to the file
+	downloadLink.href = window.URL.createObjectURL(csvFile);
 
-    // Hide download link
-    downloadLink.style.display = "none";
+	// Hide download link
+	downloadLink.style.display = "none";
 
-    // Add the link to DOM
-    document.body.appendChild(downloadLink);
+	// Add the link to DOM
+	document.body.appendChild(downloadLink);
 
-    // Click downljavascript:;oad link
-    downloadLink.click();
+	// Click downljavascript:;oad link
+	downloadLink.click();
 }
 
 function exportTableToCSV(filename) {
-		var csv = [];
-    var data = document.querySelectorAll("tr, select, input");
-    var rows = [];
-    var t1Rows = document.getElementById("Table1").rows.length;
-    var t1Cols = document.getElementById("Table1").rows[0].cells.length;
-    var t2Cols = document.getElementById("Table2").rows[0].cells.length;
-    for (var i = 0; i < (t1Rows * t1Cols); i++) {
-    	switch(i % 2){
-      	case 0:
-        	rows.push("#" + data[i].innerText);
-          break;
-        case 1:
-        	rows.push(data[i].value);
-          csv.push(rows.join());
-          rows = [];
-          break;
-      }
-    }
+	var csv = [];
+	var data = document.querySelectorAll("tr, select, input");
+	var rows = [];
+	var t1Rows = document.getElementById("Table1").rows.length;
+	var t1Cols = document.getElementById("Table1").rows[0].cells.length;
+	var t2Cols = document.getElementById("Table2").rows[0].cells.length;
+	for (var i = 0; i < (t1Rows * t1Cols); i++) {
+		switch(i % 2){
+			case 0:
+				rows.push("#" + data[i].innerText);
+				break;
+			case 1:
+				rows.push(data[i].value);
+				csv.push(rows.join());
+				rows = [];
+				break;
+		}
+	}
     
-    var headers = data[t1Rows * t1Cols].innerText.split('\t');
-		csv.push(headers.join());
+	var headers = data[t1Rows * t1Cols].innerText.split('\t');
+	csv.push(headers.join());
     
-		for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
-      if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
-      	rows.push(data[j].value);
-      	if(data[j].id == "other") {
-      		csv.push(rows.join());
-        	rows = [];
-        }
-      }
-    	
-    }
-    // Download CSV file
-   downloadCSV(csv.join("\n"), filename);
+	for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
+		if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
+			rows.push(data[j].value);
+			if(data[j].id == "other") {
+				csv.push(rows.join());
+				rows = [];
+			}
+		}
+	}
+	// Download CSV file
+	downloadCSV(csv.join("\n"), filename);
 }
 
 function validateData(){
 	var errorText = "";
-  var inputList = document.querySelectorAll("input");
-  var samplesFound = 0;
+	var inputList = document.querySelectorAll("input");
+	var samplesFound = 0;
   
-  for(var i = 0; i < inputList.length; i++){
-  	if(inputList[i].id == "sample id"){
-    	samplesFound++;
-      if(!inputList[i].value.startsWith("GSM")){
-      	errorText = "Please ensure the sample ID on row " + samplesFound + " is in this format: GSM12345";
-        break;
-      }
-    }
-  }
+	for(var i = 0; i < inputList.length; i++){
+		if(inputList[i].id == "sample id"){
+			samplesFound++;
+			if(!inputList[i].value.startsWith("GSM")){
+				errorText = "Please ensure the sample ID on row " + samplesFound + " is in this format: GSM12345";
+				break;
+			}
+		}
+	}
  
-  if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
-	errorText = "Please enter the Study ID and Platform ID";
-  } else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
-	errorText = "Please ensure Study ID is in this format: GSE12345";
-  } else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
-	errorText = "Please ensure Platform ID is in this format: GPL12345";
-  } else if(document.getElementById("delim").value.length > 1) {
-	errorText = "Please enter a one character delimiter or leave blank";
-  }
-  if (errorText != "") {
-	document.getElementById("error message").innerHTML = errorText;
-  } else {
-    document.getElementById("error message").innerHTML = "";
-    exportTableToCSV('output.csv');
-  }
+	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
+		errorText = "Please enter the Study ID and Platform ID";
+	} else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
+		errorText = "Please ensure Study ID is in this format: GSE12345";
+	} else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
+		errorText = "Please ensure Platform ID is in this format: GPL12345";
+	} else if(document.getElementById("delim").value.length > 1) {
+		errorText = "Please enter a one character delimiter or leave blank";
+	}
+	if (errorText != "") {
+		document.getElementById("error message").innerHTML = errorText;
+	} else {
+		document.getElementById("error message").innerHTML = "";
+	exportTableToCSV('output.csv');
+	}
 }             
 </script>
 
