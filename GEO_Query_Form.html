@@ -7,6 +7,7 @@
     .samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
     .mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
     .mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
+  .warning{background-color:yellow}
 </style>
 
 <table id="Table1">
@@ -53,7 +54,6 @@
 	</tr>
 </table>
 
-<p><span id='study errors'></span></p>
 <div>
   <button onclick="addRows(document.getElementById('sample count').value);">Add Samples</button>
   <button onclick="removeRow();">Delete Last Sample</button>
@@ -93,8 +93,9 @@
 	</tr>  
 	</tbody>
 </table>
-<p id="sample errors">
-</p>
+
+<div class="warning" id="error message"></div>
+
 <button onclick="validateData();">Export</button>
 <script>
 
@@ -264,15 +265,6 @@ function validateData(){
 	var errorText = "";
   var inputList = document.querySelectorAll("input");
   var samplesFound = 0;
-	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
-		errorText = "Please enter the Study ID and Platform ID";
-	} else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
-		errorText = "Please ensure Study ID is in this format: GSE12345";
-	} else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
-		errorText = "Please ensure Platform ID is in this format: GPL12345";
-	} else if(document.getElementById("delim").value.length > 1) {
-		errorText = "Please enter a one character delimiter or leave blank";
-  }
   
   for(var i = 0; i < inputList.length; i++){
   	if(inputList[i].id == "sample id"){
@@ -283,13 +275,22 @@ function validateData(){
       }
     }
   }
-  
-	if (errorText != "") {
-		document.getElementById("study errors").innerHTML = errorText;
-	} else {
-  	document.getElementById("study errors").innerHTML = "";
-		exportTableToCSV('output.csv');
-	}
+ 
+  if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
+	errorText = "Please enter the Study ID and Platform ID";
+  } else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
+	errorText = "Please ensure Study ID is in this format: GSE12345";
+  } else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
+	errorText = "Please ensure Platform ID is in this format: GPL12345";
+  } else if(document.getElementById("delim").value.length > 1) {
+	errorText = "Please enter a one character delimiter or leave blank";
+  }
+  if (errorText != "") {
+	document.getElementById("error message").innerHTML = errorText;
+  } else {
+    document.getElementById("error message").innerHTML = "";
+    exportTableToCSV('output.csv');
+  }
 }             
 </script>
 
