@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<style type='text/css'>
+	.sampleheader{border:1px solid black;color:#000;font-weight:1000;text-align:center;height:50px;}
+    .samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
+    .mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
+    .mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
+</style>
+
+<table id="Table1">
+	<tr>
+		<label><td class="mainheader">Study ID: </td>
+		<td class="mainrow"><input type="text" id="study id" size="8"></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Platform ID: </td>
+		<td class="mainrow"><input type="text" id="platform id" size="8"></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Outside study controls: </td>
+		<td class="mainrow"><input type="text" id="study controls" size="30"></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Difference Calculation: </td>
+		<td class="mainrow"><select id="diff calc">
+			<option value="Subtraction" SELECTED>Subtraction
+			<option value="Log2">Log Base 2
+			</select></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Comparison Calculation: </td>
+		<td class="mainrow"><select id="comp calc">
+			<option value="Mean" SELECTED>Mean
+			<option value="Sum">Sum
+			</select></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">In-column Delimiter: </td>
+		<td class="mainrow"><input type="text" id="delim" size="2"></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Add N Samples: </td>
+		<td class="mainrow"><input type="number" id="sample count" size="4"></td>
+		</label>
+	</tr>
+</table>
+
+<p><span id='study errors'></span></p>
+<div>
+  <button onclick="addRows(document.getElementById('sample count').value);">Add Samples</button>
+  <button onclick="removeRow();">Delete Last Sample</button>
+</div>
+
+
+<table id="Table2" style="hidden">
+	<thead>
+		<tr>
+      <td class="sampleheader">Sample_ID</td>
+			<td class="sampleheader">Group</td>
+			<td class="sampleheader">Species</td>
+			<td class="sampleheader">Strain</td>
+			<td class="sampleheader">Treatment</td>
+			<td class="sampleheader">Dosage</td>
+			<td class="sampleheader">Exposure_Time</td>
+			<td class="sampleheader">Growth_Phase</td>
+			<td class="sampleheader">Other</td>
+		</tr>
+	</thead>
+  
+	<tbody>
+	<tr>
+		<td class="samplerow"><input type="text" id="sample id" size="10" pattern="GSM([0-9]{4,5})"></td> 		
+    <td class="samplerow"><select id="group" style="width: 100px">
+			<option value="Control">Control
+			<option value="Test">Test
+			<option value="Neither" SELECTED>Neither
+		</select></td>
+		<td class="samplerow"><input type="text" id="species" size="10"></td>
+		<td class="samplerow"><input type="text" id="strain" size="10"></td>
+		<td class="samplerow"><input type="text" id="treatment" size="10"></td>
+		<td class="samplerow"><input type="text" id="dosage" size="10"></td>
+		<td class="samplerow"><input type="text" id="exposure time" size="10"></td>
+		<td class="samplerow"><input type="text" id="growth phase" size="10"></td>
+		<td class="samplerow"><input type="text" id="other" size="10"></td>
+	</tr>  
+	</tbody>
+</table>
+<p id="sample errors">
+</p>
+<button onclick="validateData();">Export</button>
+<script>
+
+function addRows(rowNum){
+  var table = document.getElementById("Table2");
+  var tr, td, cell;
+  
+	for(var i = 0; i < rowNum; i++){
+  	tr = document.createElement("tr");
+  	for(var j = 0; j < 9; j++){
+			td = document.createElement("td");
+   //		td.setAttributeNode(attClass);
+   		if(j == 1){
+      	cell = document.createElement("select");
+        var opt1 = document.createElement("option");
+        var opt2 = document.createElement("option");
+        var opt3 = document.createElement("option");
+        cell.appendChild(opt1);
+        cell.appendChild(opt2);
+        cell.appendChild(opt3);
+        opt1.value = "Control";
+       	opt1.innerText = "Control";
+        opt2.value = "Test";
+        opt2.innerText = "Test";
+        opt3.value = "Neither";
+        opt3.innerText = "Neither";
+      } else {
+        cell = document.createElement("input");
+      }    
+			td.appendChild(cell);
+      tr.appendChild(td);
+      
+    }
+    table.appendChild(tr);
+    
+    updateAttributes();
+  }
+}
+
+function updateAttributes(){
+  var response = document.querySelectorAll('select, input');
+	var background = document.getElementsByTagName('td');
+  var allOpt = document.getElementsByTagName('option');
+  for (var j=0; j < background.length; j++){
+  	if(j >= 23){
+    	background[j].setAttribute("class", "samplerow");
+    }
+ 	}
+  var idSwitch;
+	for (var i=0; i < response.length; i++) {
+  	if(response[i].id == ""){
+    	switch((i - 16) % 9){
+      	case 0:
+        	idSwitch = "sample id";
+          break;
+        case 1:
+        	idSwitch = "group";
+          break;
+        case 2:
+        	idSwitch = "species";
+          break;
+        case 3:
+        	idSwitch = "strain";
+          break;
+        case 4:
+        	idSwitch = "treatment";
+          break;
+        case 5:
+        	idSwitch = "dosage";
+          break;
+        case 6:
+        	idSwitch = "exposure time";
+          break;
+        case 7:
+        	idSwitch = "growth phase";
+          break;
+        case 8:
+        	idSwitch = "other";
+          break;
+      }
+      response[i].setAttribute("id", idSwitch);
+      if((i - 16) % 9 == 1) {
+      	response[i].setAttribute("style", "width: 100px");
+      } else {
+      	response[i].setAttribute("size", "10");
+        response[i].setAttribute("input", "text");
+      }
+    }
+	}
+  
+	for (var l = 0; l < allOpt.length; l++){
+  	if(allOpt[l].getAttribute("value") == "Neither"){
+    	allOpt[l].setAttribute("SELECTED", true);
+    }
+  }
+}
+
+function removeRow(){
+	var nrow = document.getElementById("Table2").rows.length
+	document.getElementById("Table2").deleteRow(nrow - 1);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click downljavascript:;oad link
+    downloadLink.click();
+}
+
+function exportTableToCSV(filename) {
+		var csv = [];
+    var data = document.querySelectorAll("tr, select, input");
+    var rows = [];
+    var t1Rows = document.getElementById("Table1").rows.length;
+    var t1Cols = document.getElementById("Table1").rows[0].cells.length;
+    var t2Cols = document.getElementById("Table2").rows[0].cells.length;
+    for (var i = 0; i < (t1Rows * t1Cols); i++) {
+    	switch(i % 2){
+      	case 0:
+        	rows.push("#" + data[i].innerText);
+          break;
+        case 1:
+        	rows.push(data[i].value);
+          csv.push(rows.join());
+          rows = [];
+          break;
+      }
+    }
+    
+    var headers = data[t1Rows * t1Cols].innerText.split('\t');
+		csv.push(headers.join());
+    
+		for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
+      if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
+      	rows.push(data[j].value);
+      	if(data[j].id == "other") {
+      		csv.push(rows.join());
+        	rows = [];
+        }
+      }
+    	
+    }
+    // Download CSV file
+   downloadCSV(csv.join("\n"), filename);
+}
+
+function validateData(){
+	var errorText = "";
+  var inputList = document.querySelectorAll("input");
+  var samplesFound = 0;
+	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
+		errorText = "Please enter the Study ID and Platform ID";
+	} else if(!document.getElementById("study id").value.match("GSE([0-9]{4,5})")) {
+		errorText = "Please ensure Study ID is in this format: GSE12345";
+	} else if(!document.getElementById("platform id").value.match("GPL([0-9]{4,5})")) {
+		errorText = "Please ensure Platform ID is in this format: GPL12345";
+	} else if(document.getElementById("delim").value.length > 1) {
+		errorText = "Please enter a one character delimiter or leave blank";
+  }
+  
+  for(var i = 0; i < inputList.length; i++){
+  	if(inputList[i].id == "sample id"){
+    	samplesFound++;
+      if(!inputList[i].value.startsWith("GSM")){
+      	errorText = "Please ensure the sample ID on row " + samplesFound + " is in this format: GSM12345";
+        break;
+      }
+    }
+  }
+  
+	if (errorText != "") {
+		document.getElementById("study errors").innerHTML = errorText;
+	} else {
+  	document.getElementById("study errors").innerHTML = "";
+		exportTableToCSV('output.csv');
+	}
+}             
+</script>
+
+
+</body>
+</html>
