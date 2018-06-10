@@ -67,11 +67,11 @@
 			<td class="sampleheader">Group</td>
 			<td class="sampleheader">Species</td>
 			<td class="sampleheader">Strain</td>
+			<td class="sampleheader">Growth_Phase</td>
+			<td class="sampleheader">Other</td>
 			<td class="sampleheader">Treatment</td>
 			<td class="sampleheader">Dosage</td>
 			<td class="sampleheader">Exposure_Time</td>
-			<td class="sampleheader">Growth_Phase</td>
-			<td class="sampleheader">Other</td>
 		</tr>
 	</thead>
   
@@ -85,11 +85,11 @@
 		</select></td>
 		<td class="samplerow"><input type="text" id="species" size="10"></td>
 		<td class="samplerow"><input type="text" id="strain" size="10"></td>
+		<td class="samplerow"><input type="text" id="growth phase" size="10"></td>
+		<td class="samplerow"><input type="text" id="other" size="10"></td>
 		<td class="samplerow"><input type="text" id="treatment" size="10"></td>
 		<td class="samplerow"><input type="text" id="dosage" size="10"></td>
 		<td class="samplerow"><input type="text" id="exposure time" size="10"></td>
-		<td class="samplerow"><input type="text" id="growth phase" size="10"></td>
-		<td class="samplerow"><input type="text" id="other" size="10"></td>
 	</tr>  
 	</tbody>
 </table>
@@ -157,19 +157,19 @@ function updateAttributes(){
 					idSwitch = "strain";
 					break;
 				case 4:
-					idSwitch = "treatment";
-					break;
-				case 5:
-					idSwitch = "dosage";
-					break;
-				case 6:
-					idSwitch = "exposure time";
-					break;
-				case 7:
 					idSwitch = "growth phase";
 					break;
-				case 8:
+				case 5:
 					idSwitch = "other";
+					break;
+				case 6:
+					idSwitch = "treatment";
+					break;
+				case 7:
+					idSwitch = "dosage";
+					break;
+				case 8:
+					idSwitch = "exposure time";
 					break;
 			}
 			response[i].setAttribute("id", idSwitch);
@@ -222,7 +222,7 @@ function exportTableToCSV(filename) {
 	for (var i = 0; i < (t1Rows * t1Cols); i++) {
 		switch(i % 2){
 			case 0:
-				rows.push("#" + data[i].innerText);
+				rows.push("#" + data[i].innerText.replace(':\t',''));
 				break;
 			case 1:
 				rows.push(data[i].value);
@@ -238,7 +238,7 @@ function exportTableToCSV(filename) {
 	for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
 		if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
 			rows.push(data[j].value);
-			if(data[j].id == "other") {
+			if(data[j].id == "exposure time") {
 				csv.push(rows.join());
 				rows = [];
 			}
@@ -271,7 +271,7 @@ function validateData(){
 				if(!inputList[i].value.match("GSM[0-9]+$")){
 					errorText = "Please ensure the sample ID on row " + sampleIndex + " is in this format: GSM12345";
 					break;
-				//Then check if sample matches exactly a previous sample"
+				//Then check if sample matches exactly a previous sample
 				} else if(sampList.match(RegExp(inputList[i].value, "g"))) {
 					errorText = "Sample ID on row " + sampleIndex + " is a duplicate of a previous sample";
 					break;

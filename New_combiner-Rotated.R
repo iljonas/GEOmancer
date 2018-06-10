@@ -5,6 +5,8 @@ library(rvest)
 
 trim <- function(t){gsub("^\\s+|\\s+$", "", t)}
 
+logDiv <- function(x, y){log(x / y, 2)}
+
 setMeta.study <- function(source){
      temp.meta <- read.table(source, sep = "\t", 
                              comment.char = "", fill = TRUE, stringsAsFactors = FALSE)
@@ -44,7 +46,7 @@ setSeries <- function(seriesID, m.samples){
      m.samples <- m.samples[order(row.names(m.samples)), ]
      if(!(FALSE %in%
           (sapply(names(temp.series)[-1], function(x){trim(x)}) 
-               == sapply(row.names(m.samples), function(x){trim(x)})))) {
+           == sapply(row.names(m.samples), function(x){trim(x)})))) {
           names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(trim(x), collapse = "|")})
           names(temp.series) <- gsub(" ", "_", names(temp.series))
      }
@@ -53,7 +55,7 @@ setSeries <- function(seriesID, m.samples){
                Please check over the entries and rerun the program.")
      }
      return(temp.series)
-}
+     }
 
 setPlatform <- function(platformID){
      if(grepl("[^.:\\\\]", platformID)) {
@@ -79,39 +81,78 @@ newControls <- function(c.source, m){
 }
 
 findMatches <- function(dfname, df){
-     if(grepl("^Test|Neither", dfname)) {
-          sub.df <- df[,names(df) == "Expression.ID" | gsub("^[^|]*\\|", "", dfname) == gsub("^[^|]*\\|", "", names(df))]
+     #If the column name starts with Test or Neither, assemble all related columns into a data frame (controls are ignored in this operation)
+     #To find matches, first make a temp.df to be to hold any non-control columns that match dfname (as well as dfname itself)
+     #Then remove all Test/Neither columns from the original data frame, leaving only the controls
+     #and remove the group identifier from the beginning of the remaining names
+     #, keep only the Expression.ID and any controls (with their group id removed) that match df name when the treatment, dosage, 
+     #and exposure time columns are removed
+     if(grepl("^(Test|Neither)", dfname)) {
+          test.df <- select(df, which(gsub("^[^|]*\\|", "", names(df)) == gsub("^[^|]*\\|", "", dfname)))
+          cont.df <- df %>% 
+               select(-(grep("^(Test|Neither)", names(df)))) %>%
+               gsub("^[^|]*\\|", "", names(df)) %>%
+               select(which(names(df) == "Expression.ID" | 
+                                 gsub("([^|]*\\|){2}[^|]*$", "", dfname) == gsub("([^|]*\\|){2}[^|]*$", "", names(df))))
           
-          if(TRUE %in% grepl("^Test|Neither", names(sub.df))){ #change test to control
-               return(sub.df)
+          #If there are no Test columns in the data frame, you don't need the controls. So these groups are only merged if a Test frame is present
+          if(TRUE %in% (grepl("^Test", names(test.df)))) {
+               return(merge(test.df, cont.df, by = "Expression.ID"))
+          } else {
+               return(test.df)
           }
      }
 }
 
 combine.groups <- function(g, m.study){
+     #initiates combined group with just the expression id. This will be the output data frame
      combined.group <- select(g, Expression.ID)
-     all.group <- as.data.frame(c(Expression.ID = combined.group, select(g, contains("160_min"))))
-     control.group <- select(g, contains("120_min"))
-     test.group <- select(g, contains("|60_min"))
+     
+     #initiates the all group, which will contain all individual comparisons
+     #starts with the expression id and "Neither" groups, as they don't need to be compared
+     all.group <- as.data.frame(c(Expression.ID = combined.group, select(g, startswith("Neither"))))
+     
+     #separate the control and test groups
+     control.group <- select(g, startswith("Control"))
+     test.group <- select(g, startswith("Test"))
+     
+     #get user selected method for calculating difference between each test and control 
+     #and method for combining all groups     
      diff.calc <- subset(meta.study, Field == "Diff_Calc", Description, drop = TRUE)
-     comp.calc <- subset(meta.study, Field == "Comparison_Calc", Description, drop = TRUE)
-     counter <- ncol(all.group)
+     comp.calc <- meta.study %>% 
+          subset(Field == "Comparison_Calc", Description, drop = TRUE) %>%
+          tolower
+     
+     #counter for adding new columns to the all group (after any current columns
+     counter <- ncol(all.group) 
+     
+     #determine diff.calc function based on user input
+     if(diff.calc == "Subtraction") {
+          diff.calc <- "-"
+     } else if(diff.calc == "Log2") {
+          diff.calc <- "logDiv"
+     }
+     
+     #loop through each test and compare to each control (via the user selected method)
      for(t in test.group){
           for(c in control.group){
                counter <- counter + 1
-               all.group[, counter] <- if_else(diff.calc == "Subtract", t - c, 
-                                               if_else(diff.calc == "Log2", log(t / c, 2), 
-                                               stop("Error in difference calculation; check JavaScript")))
+               all.group[, counter] <- do.call(diff.calc, x, y)
           }
      }
      
-     all.combined <- apply(all.group[, -1], 1, if_else(comp.calc == "Mean", FUN = mean,
-                                                      if_else(comp.calc == "Sum", FUN = sum,
-                                                              stop("Error in combination calculation; check JavaScript"))) 
-                           , na.rm = TRUE)
-     combined.group$placeholder <- all.combined
-     #new.name <- unique(gsub("^[^|]*\\|", "", names(g)[-1]))
-     names(combined.group)[2] <- unique(gsub("\\|Dapt.*", "", names(g)[-1]))
+     #combine all groups (except for expression id) via the user selected method
+     all.combined <- apply(all.group[, -1], 1, FUN = do.call(comp.calc), na.rm = TRUE)
+     
+     #normalize the data and add to the combined group
+     combined.group$placeholder <- all.combined / max(all.combined)
+     
+     #with the control groups and expression id removed, all names should be the same once the group type is removed
+     #use this common name for the data title
+     names(combined.group)[2] <- names(g)[-1] %>%
+          select(-(startswith("Control"))) %>%
+          gsub("^[^|]*\\|", "") %>%
+          unique
      
      return(all.combined)
 }
@@ -131,7 +172,7 @@ subdelim <-  subset(meta.study, Field == "Sub_Delim", Description, drop = TRUE)
 if(subdelim == "") {subdelim <- ","}
 
 new.platform <- platform %>%
-     select(which(grepl("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platform)))) %>%
+     select(grep("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platform))) %>%
      melt(id.vars = "ID", na.rm = TRUE) %>%
      rowwise %>%
      mutate(value = gsub("::(?(?<=E).|[^+-])*[+-]", "", value, perl = TRUE)) %>%
@@ -148,6 +189,18 @@ if(outside.controls != ""){
      master <- newControls(outside.controls, master)
 }
 
-sep.master<- sapply(colnames(master), findMatches, df = master)
+#
+i <- 2
+sep.master <- vector()
+repeat{
+     group <- findMatches(names(master)[i], master)
+     group.tests <- select(group, grep("^(Test|Neither)", names(group)))
+     master <- select(master, -(names(group.tests)))
+     if(!(TRUE %in% (grepl("^Control", master[-1])))){
+          break
+     }
+     i <- i + 1
+}
+#sep.master<- sapply(colnames(master), findMatches, df = master)
 
-new.master <- sapply(sep.master, FUN = combine.groups, m.study = meta.study)
+comb.master <- sapply(sep.master, FUN = combine.groups, m.study = meta.study)
