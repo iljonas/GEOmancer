@@ -1,4 +1,3 @@
-library(reshape2)
 library(dplyr)
 library(tidyr)
 library(rvest)
@@ -25,7 +24,7 @@ setMeta.samples <- function(source){
 setSeries <- function(seriesID, m.samples){
      series.folder <- "Series_Source"
      dir.create(series.folder, showWarnings = FALSE)
-     local.path <- paste0(series.folder ,"\\" , seriesID, ".txt.gz")
+     local.path <- paste0(series.folder ,"\\" , toupper(seriesID), ".txt.gz")
      
      if(!file.exists(local.path)){
           if(!(grepl("^ftp:\\\\", seriesID))) {
@@ -55,11 +54,11 @@ setSeries <- function(seriesID, m.samples){
                Please check over the entries and rerun the program.")
      }
      return(temp.series)
-     }
+}
 
 setPlatform <- function(platformID){
      if(grepl("[^.:\\\\]", platformID)) {
-          pURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?view=data&acc=", platformID)
+          pURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?view=data&acc=", toupper(platformID))
           pText <- read_html(pURL) %>%
                html_nodes("pre") %>%
                html_text
@@ -157,7 +156,7 @@ combine.groups <- function(g, m.study){
      return(all.combined)
 }
 
-meta.source <- "C:\\Users\\Isaac\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Temp_Source-Rotated.txt"
+meta.source <- "C:\\Users\\iljonas\\Documents\\Capstone\\GEO-Antimicrobial-Adjunct-Project\\Temp_Source-Rotated.txt"
 
 meta.study <- setMeta.study(meta.source)
 meta.samples <- setMeta.samples(meta.source)
@@ -173,16 +172,17 @@ if(subdelim == "") {subdelim <- ","}
 
 new.platform <- platform %>%
      select(grep("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platform))) %>%
-     melt(id.vars = "ID", na.rm = TRUE) %>%
+     gather(key, value, -ID, na.rm = TRUE) %>%
      rowwise %>%
      mutate(value = gsub("::(?(?<=E).|[^+-])*[+-]", "", value, perl = TRUE)) %>%
      mutate(Expression.ID = strsplit(as.character(value), subdelim)) %>%
      unnest(Expression.ID) %>%
-     select(-c(value, variable)) %>%
+     mutate(Source = if_else(key == "PT_ACC", "Protein", "Gene")) %>%
+     select(-c(value, key)) %>%
      unique
 
 master <- merge(new.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
-     select(-(ID))
+     select(-ID)
 
 outside.controls <- subset(meta.study, Field == "Study_Controls", Description, drop = TRUE)
 if(outside.controls != ""){
