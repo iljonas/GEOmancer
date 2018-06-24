@@ -47,7 +47,7 @@ setSeries <- function(seriesID, m.samples){
      if(!(FALSE %in%
           (sapply(names(temp.series)[-1], function(x){trim(x)}) 
            == sapply(row.names(m.samples), function(x){trim(x)})))) {
-          names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(trim(x), collapse = "|")})
+          names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(trim(toupper(x)), collapse = "|")})
           names(temp.series) <- gsub(" ", "_", names(temp.series))
      }
      else{
