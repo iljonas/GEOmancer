@@ -256,9 +256,9 @@ function validateData(){
 	
 	if(document.getElementById("study id").value == "" || document.getElementById("platform id").value == "") {
 		errorText = "Please enter the Study ID and Platform ID";
-	} else if(!document.getElementById("study id").value.match("GSE[0-9]+$")) {
+	} else if(!document.getElementById("study id").value.match("[Gg][Ss][Ee][0-9]+$")) {
 		errorText = "Please ensure Study ID is in this format: GSE12345";
-	} else if(!document.getElementById("platform id").value.match("GPL[0-9]+$")) {
+	} else if(!document.getElementById("platform id").value.match("[Gg][Pp][Ll][0-9]+$")) {
 		errorText = "Please ensure Platform ID is in this format: GPL12345";
 	} else if(document.getElementById("delim").value.length > 1) {
 		errorText = "Please enter a one character delimiter or leave blank";
@@ -268,7 +268,7 @@ function validateData(){
 			if(inputList[i].id == "sample id"){
 				sampleIndex++;
 				//First check for samples that don't match the correct format and show where the error lies
-				if(!inputList[i].value.match("GSM[0-9]+$")){
+				if(!inputList[i].value.match("[Gg][Ss][Mm][0-9]+$")){
 					errorText = "Please ensure the sample ID on row " + sampleIndex + " is in this format: GSM12345";
 					break;
 				//Then check if sample matches exactly a previous sample
