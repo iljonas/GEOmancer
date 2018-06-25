@@ -6,6 +6,12 @@ trim <- function(t){gsub("^\\s+|\\s+$", "", t)}
 
 logDiv <- function(x, y){log(x / y, 2)}
 
+folderPath <- function(){
+     userID <- Sys.info()["user"]
+     folder <- paste0("C:\\Users\\", userID, 
+                           "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\GEO_Source_Files\\")
+}
+
 setMeta.study <- function(source){
      temp.meta <- read.table(source, sep = "\t", 
                              comment.char = "", fill = TRUE, stringsAsFactors = FALSE)
@@ -16,17 +22,16 @@ setMeta.study <- function(source){
 }
 
 setMeta.samples <- function(source){
-     temp.meta <- read.table(source, comment.char = "#", sep = '\t', na.strings = 'NA', stringsAsFactors = FALSE)
-     row.names(temp.meta) <- temp.meta$V1
+     temp.meta <- read.csv(source, comment.char = "#", sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)
+     row.names(temp.meta) <- temp.meta$Sample_ID
      return(temp.meta[-1])
 }
 
 setSeries <- function(seriesID, m.samples){
-     series.folder <- "Series_Source"
-     dir.create(series.folder, showWarnings = FALSE)
-     local.path <- paste0(series.folder ,"\\" , toupper(seriesID), ".txt.gz")
+     series.folder <- paste0(folderPath(), "\\GEO_Series")
+     series.path <- paste0(series.folder ,"\\" , toupper(seriesID), ".txt.gz")
      
-     if(!file.exists(local.path)){
+     if(!file.exists(series.path)){
           if(!(grepl("^ftp:\\\\", seriesID))) {
                ftp.path <- paste("ftp://ftp.ncbi.nlm.nih.gov/geo/series", 
                                  gsub("...$", "nnn", seriesID), seriesID, "matrix",
@@ -35,14 +40,15 @@ setSeries <- function(seriesID, m.samples){
           } else {
                ftp.path = seriesID
           }
-          download.file(ftp.path, destfile = local.path)
+          download.file(ftp.path, destfile = series.path)
      }
      
-     temp.series <- read.csv(gzfile(local.path), comment.char = "!", sep = '\t', 
+     temp.series <- read.csv(gzfile(series.path), comment.char = "!", sep = '\t', 
                              na.strings = c("", "null"), stringsAsFactors = FALSE)
      temp.series <- temp.series[, order(names(temp.series))]
      temp.series <- select(temp.series, ID_REF, everything())
      m.samples <- m.samples[order(row.names(m.samples)), ]
+
      if(!(FALSE %in%
           (sapply(names(temp.series)[-1], function(x){trim(x)}) 
            == sapply(row.names(m.samples), function(x){trim(x)})))) {
@@ -53,30 +59,67 @@ setSeries <- function(seriesID, m.samples){
           stop("The samples names in the form don't match the sample names in the series data.
                Please check over the entries and rerun the program.")
      }
+     
      return(temp.series)
 }
 
 setPlatform <- function(platformID){
-     if(grepl("[^.:\\\\]", platformID)) {
+     platform.folder <- paste0(folderPath(), "\\GEO_Platforms")
+     platform.path <- paste0(platform.folder ,"\\" , toupper(platformID), ".txt.gz")
+     
+     if(!file.exists(platform.path)) {
           pURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?view=data&acc=", toupper(platformID))
           pText <- read_html(pURL) %>%
                html_nodes("pre") %>%
                html_text
-          read.csv(text = pText, comment.char = "#", sep = "\t", quote = "", na.strings = "", stringsAsFactors = FALSE)
-     } else {
-          read.csv(platformID, comment.char = "#", sep = "\t", quote = "", na.strings = "", stringsAsFactors = FALSE)
+          file.create(platform.path)
+          writeLines(pText, con = gzfile(platform.path))
+          closeAllConnections()
      }
+     
+     read.csv(gzfile(platform.path), comment.char = "#", sep = "\t", quote = "", na.strings = "", stringsAsFactors = FALSE)
 }
 
-newControls <- function(c.source, m){
-     c.study <- setMeta.study(c.source)
-     c.samples <- setMeta.samples(c.source, c.study)
+adjustPlatform <- function(platDF, delim){
+     new.plat <- platDF %>%
+          select(grep("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platDF))) %>%
+          gather(key, value, -ID, na.rm = TRUE) %>%
+          rowwise %>%
+          mutate(value = gsub("::(?(?<=E).|[^+-])*[+-]", "", value, perl = TRUE)) %>%
+          mutate(Expression.ID = strsplit(as.character(value), delim)) %>%
+          unnest(Expression.ID) %>%
+          mutate(Source = if_else(key == "PT_ACC", "Protein", "Gene")) %>%
+          select(-c(value, key)) %>%
+          unique
+}
+
+assembleSeries <- function(source, is.control = FALSE){
+     meta.source <- paste0(folderPath(), "GEO_Forms\\",
+                           source, ".tsv")
      
-     c_series.id <- subset(c.study, Field == "Study", Description, drop = TRUE)
-     c_series <- setSeries(series.id, c.samples)
+     meta.study <- setMeta.study(meta.source)
+     meta.samples <- setMeta.samples(meta.source)#, meta.study)
      
-     c_series.controls <- select(sec_series, Expression.ID, starts_with("Test"))
-     merge(m, c_series.control, by = "Expression.ID")
+     series.id <- subset(meta.study, Field == "Study ID", Description, drop = TRUE)
+
+     series <- setSeries(series.id, meta.samples)
+     
+     if(is.control){
+          series <- select(series, Expression.ID, starts_with("Control"))
+     }
+     
+     platform.id <- subset(meta.study, Field == "Platform ID", Description, drop = TRUE)
+     platform <- setPlatform(platform.id)
+     
+     subdelim <-  subset(meta.study, Field == "In-column Delimiter", Description, drop = TRUE)
+     if(subdelim == "") {subdelim <- ","}
+     
+     adj.platform <- adjustPlatform(platform, subdelim)
+     
+     adj.series <- merge(adj.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
+          select(-ID)
+     
+     return(adj.series)
 }
 
 findMatches <- function(dfname, df){
@@ -156,40 +199,13 @@ combine.groups <- function(g, m.study){
      return(all.combined)
 }
 
-uID <- Sys.info()["user"]
+source.name <- "GSE26249"
 
-meta.source <- paste0("C:\\Users\\", uID, 
-                      "\\Documents\\Capstone\\GEO-Antimicrobial-Adjunct-Project\\Temp_Source-Rotated.txt")
-
-meta.study <- setMeta.study(meta.source)
-meta.samples <- setMeta.samples(meta.source)
-
-series.id <- subset(meta.study, Field == "Study", Description, drop = TRUE)
-series <- setSeries(series.id, meta.samples)
-
-platform.id <- subset(meta.study, Field == "Platform", Description, drop = TRUE)
-platform <- setPlatform(platform.id)
-
-subdelim <-  subset(meta.study, Field == "Sub_Delim", Description, drop = TRUE)
-if(subdelim == "") {subdelim <- ","}
-
-new.platform <- platform %>%
-     select(grep("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platform))) %>%
-     gather(key, value, -ID, na.rm = TRUE) %>%
-     rowwise %>%
-     mutate(value = gsub("::(?(?<=E).|[^+-])*[+-]", "", value, perl = TRUE)) %>%
-     mutate(Expression.ID = strsplit(as.character(value), subdelim)) %>%
-     unnest(Expression.ID) %>%
-     mutate(Source = if_else(key == "PT_ACC", "Protein", "Gene")) %>%
-     select(-c(value, key)) %>%
-     unique
-
-master <- merge(new.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
-     select(-ID)
+master <- assembleSeries(source.name)
 
 outside.controls <- subset(meta.study, Field == "Study_Controls", Description, drop = TRUE)
 if(outside.controls != ""){
-     master <- newControls(outside.controls, master)
+     master <- data.frame(master, assembleSeries(outside.controls, TRUE))
 }
 
 #
