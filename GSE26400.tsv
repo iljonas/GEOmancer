@@ -1,0 +1,56 @@
+#Study ID	GSE26400
+#Platform ID	GPL10597
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	,
+#Add N Samples	
+Sample_ID	Group	Species	Strain	Growth_Phase	Other	Treatment	Dosage	Exposure_Time
+GSM643932	Test	S. aureus	C1	early log		Vancomycin	16mM	30min
+GSM643954	Test	S. aureus	C1	early log		Vancomycin	16mM	30min
+GSM646161	Test	S. aureus	C1	early log		Vancomycin	16mM	30min
+GSM646162	Test	S. aureus	C1	mid log		Vancomycin	16mM	60min
+GSM646163	Test	S. aureus	C1	mid log		Vancomycin	16mM	60min
+GSM646164	Test	S. aureus	C1	mid log		Vancomycin	16mM	60min
+GSM646182	Test	S. aureus	C1	early stationary		Vancomycin	16mM	120min
+GSM646183	Test	S. aureus	C1	early stationary		Vancomycin	16mM	120min
+GSM646196	Test	S. aureus	C1	early stationary		Vancomycin	16mM	120min
+GSM646203	Test	S. aureus	C1	late log		Vancomycin	16mM	90min
+GSM646204	Test	S. aureus	C1	late log		Vancomycin	16mM	90min
+GSM646256	Test	S. aureus	C1	late log		Vancomycin	16mM	90min
+GSM646528	Test	S. aureus	T8	early stationary		Vancomycin	32mM	120min
+GSM646529	Test	S. aureus	T8	early stationary		Vancomycin	32mM	120min
+GSM646530	Test	S. aureus	T8	early stationary		Vancomycin	32mM	120min
+GSM646537	Test	S. aureus	T8	early log		Vancomycin	32mM	30min
+GSM646538	Test	S. aureus	T8	early log		Vancomycin	32mM	30min
+GSM646539	Test	S. aureus	T8	early log		Vancomycin	32mM	30min
+GSM646540	Test	S. aureus	T8	mid log		Vancomycin	32mM	60min
+GSM646541	Test	S. aureus	T8	mid log		Vancomycin	32mM	60min
+GSM646542	Test	S. aureus	T8	mid log		Vancomycin	32mM	60min
+GSM646543	Test	S. aureus	T8	late log		Vancomycin	32mM	90min
+GSM646544	Test	S. aureus	T8	late log		Vancomycin	32mM	90min
+GSM646571	Test	S. aureus	T8	late log		Vancomycin	32mM	90min
+GSM646682	Control	S. aureus	C1	early log				
+GSM646686	Control	S. aureus	C1	early log				
+GSM646694	Control	S. aureus	C1	early log				
+GSM646699	Control	S. aureus	T8	early log				
+GSM646715	Control	S. aureus	T8	early log				
+GSM646717	Control	S. aureus	T8	early log				
+GSM646719	Control	S. aureus	C1	mid log				
+GSM646721	Control	S. aureus	C1	mid log				
+GSM647201	Control	S. aureus	T8	mid log				
+GSM647202	Control	S. aureus	T8	mid log				
+GSM647203	Control	S. aureus	T8	mid log				
+GSM647204	Control	S. aureus	C1	late log				
+GSM647205	Control	S. aureus	C1	late log				
+GSM647206	Control	S. aureus	C1	late log				
+GSM647213	Control	S. aureus	T8	late log				
+GSM647214	Control	S. aureus	T8	late log				
+GSM647215	Control	S. aureus	T8	late log				
+GSM647259	Control	S. aureus	C1	early stationary				
+GSM647260	Control	S. aureus	C1	early stationary				
+GSM647261	Control	S. aureus	C1	early stationary				
+GSM647262	Control	S. aureus	T8	early stationary				
+GSM647263	Control	S. aureus	T8	early stationary				
+GSM647264	Control	S. aureus	T8	early stationary				
+GSM647288	Control	S. aureus	C1	mid log				

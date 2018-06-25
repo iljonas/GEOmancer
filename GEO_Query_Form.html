@@ -226,20 +226,20 @@ function exportTableToCSV(filename) {
 				break;
 			case 1:
 				rows.push(data[i].value);
-				csv.push(rows.join());
+				csv.push(rows.join('\t'));
 				rows = [];
 				break;
 		}
 	}
     
 	var headers = data[t1Rows * t1Cols].innerText.split('\t');
-	csv.push(headers.join());
+	csv.push(headers.join('\t'));
     
 	for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
 		if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
 			rows.push(data[j].value);
 			if(data[j].id == "exposure time") {
-				csv.push(rows.join());
+				csv.push(rows.join('\t'));
 				rows = [];
 			}
 		}
@@ -272,7 +272,7 @@ function validateData(){
 					errorText = "Please ensure the sample ID on row " + sampleIndex + " is in this format: GSM12345";
 					break;
 				//Then check if sample matches exactly a previous sample
-				} else if(sampList.match(RegExp(inputList[i].value, "g"))) {
+				} else if(sampList.toLowerCase().match(RegExp(inputList[i].value.toLowerCase(), "g"))) {
 					errorText = "Sample ID on row " + sampleIndex + " is a duplicate of a previous sample";
 					break;
 				}
@@ -285,7 +285,7 @@ function validateData(){
 		document.getElementById("error message").innerHTML = errorText;
 	} else {
 		document.getElementById("error message").innerHTML = "";
-	exportTableToCSV('output.csv');
+	exportTableToCSV(document.getElementById("study id").value + '.tsv');
 	}
 }             
 </script>
