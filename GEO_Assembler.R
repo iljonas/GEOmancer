@@ -53,6 +53,14 @@ setSeries <- function(seriesID, m.samples){
           (sapply(names(temp.series)[-1], function(x){trim(x)}) 
            == sapply(row.names(m.samples), function(x){trim(x)})))) {
           names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(trim(toupper(x)), collapse = "|")})
+          
+          sep.num <- ncol(m.samples) - 1
+          for (i in 2:ncol(temp.series)){
+               if(nchar(names(temp.series)[i]) - nchar(gsub('\\|', '', names(temp.series)[i])) == sep.num){
+                    cols <- which(names(temp.series)[i] == names(temp.series))
+                    names(temp.series)[cols] <- paste(names(temp.series)[i], seq_along(cols), sep = '|')
+               }
+          }
           names(temp.series) <- gsub(" ", "_", names(temp.series))
      }
      else{
@@ -98,14 +106,14 @@ assembleSeries <- function(source, is.control = FALSE){
                            source, ".tsv")
      
      meta.study <- setMeta.study(meta.source)
-     meta.samples <- setMeta.samples(meta.source)#, meta.study)
+     meta.samples <- setMeta.samples(meta.source)
      
      series.id <- subset(meta.study, Field == "Study ID", Description, drop = TRUE)
 
      series <- setSeries(series.id, meta.samples)
      
-     if(is.control){
-          series <- select(series, Expression.ID, starts_with("Control"))
+     if(is.control == TRUE){
+          series <- select(series, ID_REF, starts_with("Control"))
      }
      
      platform.id <- subset(meta.study, Field == "Platform ID", Description, drop = TRUE)
@@ -119,7 +127,7 @@ assembleSeries <- function(source, is.control = FALSE){
      adj.series <- merge(adj.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
           select(-ID)
      
-     return(adj.series)
+     return(list(meta.study, adj.series))
 }
 
 findMatches <- function(dfname, df){
@@ -135,7 +143,7 @@ findMatches <- function(dfname, df){
                select(-(grep("^(Test|Neither)", names(df)))) %>%
                gsub("^[^|]*\\|", "", names(df)) %>%
                select(which(names(df) == "Expression.ID" | 
-                                 gsub("([^|]*\\|){2}[^|]*$", "", dfname) == gsub("([^|]*\\|){2}[^|]*$", "", names(df))))
+                                 gsub("([^|]*\\|){3}[^|]*$", "", dfname) == gsub("([^|]*\\|){3}[^|]*$", "", names(df))))
           
           #If there are no Test columns in the data frame, you don't need the controls. So these groups are only merged if a Test frame is present
           if(TRUE %in% (grepl("^Test", names(test.df)))) {
@@ -160,9 +168,9 @@ combine.groups <- function(g, m.study){
      
      #get user selected method for calculating difference between each test and control 
      #and method for combining all groups     
-     diff.calc <- subset(meta.study, Field == "Diff_Calc", Description, drop = TRUE)
+     diff.calc <- subset(meta.study, Field == "Difference Calculation", Description, drop = TRUE)
      comp.calc <- meta.study %>% 
-          subset(Field == "Comparison_Calc", Description, drop = TRUE) %>%
+          subset(Field == "Comparison Calculation", Description, drop = TRUE) %>%
           tolower
      
      #counter for adding new columns to the all group (after any current columns
@@ -203,13 +211,13 @@ source.name <- "GSE26249"
 
 master <- assembleSeries(source.name)
 
-outside.controls <- subset(meta.study, Field == "Study_Controls", Description, drop = TRUE)
+outside.controls <- subset(master[[1]], Field == "Outside study controls", Description, drop = TRUE)
 if(outside.controls != ""){
-     master <- data.frame(master, assembleSeries(outside.controls, TRUE))
+     master[[2]] <- merge(master[[2]], assembleSeries(outside.controls, TRUE)[[2]], by = c("Expression.ID", "Source"))
 }
 
 #
-i <- 2
+i <- 3
 sep.master <- vector()
 repeat{
      group <- findMatches(names(master)[i], master)
