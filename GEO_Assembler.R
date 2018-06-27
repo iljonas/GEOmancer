@@ -12,6 +12,18 @@ folderPath <- function(){
                            "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\GEO_Source_Files\\")
 }
 
+comparisonCalc <- function(calc.source){
+     calc <- calc.source %>% 
+          subset(Field == "Comparison Calculation", Description, drop = TRUE) %>%
+          tolower
+}
+
+clipEnds <- function(cName, exp1, exp2){
+     cName <- gsub(exp1, '', cName)
+     cName <- gsub(exp2, '', cName)
+     return(cName)
+}
+
 setMeta.study <- function(source){
      temp.meta <- read.table(source, sep = "\t", 
                              comment.char = "", fill = TRUE, stringsAsFactors = FALSE)
@@ -32,14 +44,10 @@ setSeries <- function(seriesID, m.samples){
      series.path <- paste0(series.folder ,"\\" , toupper(seriesID), ".txt.gz")
      
      if(!file.exists(series.path)){
-          if(!(grepl("^ftp:\\\\", seriesID))) {
-               ftp.path <- paste("ftp://ftp.ncbi.nlm.nih.gov/geo/series", 
-                                 gsub("...$", "nnn", seriesID), seriesID, "matrix",
-                                 paste0(seriesID, "_series_matrix.txt.gz"), 
-                                 sep = "/")
-          } else {
-               ftp.path = seriesID
-          }
+          ftp.path <- paste("ftp://ftp.ncbi.nlm.nih.gov/geo/series", 
+                            gsub("...$", "nnn", seriesID), seriesID, "matrix",
+                            paste0(seriesID, "_series_matrix.txt.gz"),
+                            sep = "/")
           download.file(ftp.path, destfile = series.path)
      }
      
@@ -101,19 +109,19 @@ adjustPlatform <- function(platDF, delim){
           unique
 }
 
-assembleSeries <- function(source, is.control = FALSE){
+assembleSeries <- function(source, is.control = FALSE, ignore.field = ''){
      meta.source <- paste0(folderPath(), "GEO_Forms\\",
                            source, ".tsv")
      
      meta.study <- setMeta.study(meta.source)
-     meta.samples <- setMeta.samples(meta.source)
+     meta.samples <- select(setMeta.samples(meta.source), ifelse(ignore.field != '', -one_of(ignore.field), everything()))
      
      series.id <- subset(meta.study, Field == "Study ID", Description, drop = TRUE)
 
      series <- setSeries(series.id, meta.samples)
      
      if(is.control == TRUE){
-          series <- select(series, ID_REF, starts_with("Control"))
+          series <- select(series, ID_REF, starts_with("CONTROL"))
      }
      
      platform.id <- subset(meta.study, Field == "Platform ID", Description, drop = TRUE)
@@ -123,9 +131,13 @@ assembleSeries <- function(source, is.control = FALSE){
      if(subdelim == "") {subdelim <- ","}
      
      adj.platform <- adjustPlatform(platform, subdelim)
-     
+
+     comp.calc <- comparisonCalc(meta.study)
      adj.series <- merge(adj.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
-          select(-ID)
+          select(-ID) %>%
+          group_by(Expression.ID, Source) %>%
+          summarize_all(eval(parse(text = comp.calc)), na.rm = TRUE)
+     adj.series[is.na(adj.series)] <- NA
      
      return(list(meta.study, adj.series))
 }
@@ -137,17 +149,21 @@ findMatches <- function(dfname, df){
      #and remove the group identifier from the beginning of the remaining names
      #, keep only the Expression.ID and any controls (with their group id removed) that match df name when the treatment, dosage, 
      #and exposure time columns are removed
-     if(grepl("^(Test|Neither)", dfname)) {
-          test.df <- select(df, which(gsub("^[^|]*\\|", "", names(df)) == gsub("^[^|]*\\|", "", dfname)))
+     if(grepl("^(TEST|NEITHER)", dfname)) {
+          test.df <- select(df, Expression.ID, Source, which(unlist(lapply(names(df), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "\\|[^|]*$"))
+                                                     == clipEnds(dfname, exp1 = "^[^|]*\\|", exp2 = "\\|[^|]*$")))
+                                                     #gsub("^[^|]*\\|", "", names(df)) == gsub("^[^|]*\\|", "", dfname)))
           cont.df <- df %>% 
-               select(-(grep("^(Test|Neither)", names(df)))) %>%
-               gsub("^[^|]*\\|", "", names(df)) %>%
-               select(which(names(df) == "Expression.ID" | 
-                                 gsub("([^|]*\\|){3}[^|]*$", "", dfname) == gsub("([^|]*\\|){3}[^|]*$", "", names(df))))
-          
+               select(-(grep("^(TEST|NEITHER)", names(df)))) %>%
+               #setNames(gsub("^[^|]*\\|", "", names(.))) %>%
+               select(Expression.ID, Source, 
+                      which(unlist(lapply(names(.), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "([^|]*\\|){3}[^|]*$"))
+                                 == clipEnds(dfname, "^[^|]*\\|", "([^|]*\\|){3}[^|]*$")))
+                                 #gsub("([^|]*\\|){3}[^|]*$", "", dfname) == gsub("([^|]*\\|){3}[^|]*$", "", names(.))))
+
           #If there are no Test columns in the data frame, you don't need the controls. So these groups are only merged if a Test frame is present
-          if(TRUE %in% (grepl("^Test", names(test.df)))) {
-               return(merge(test.df, cont.df, by = "Expression.ID"))
+          if(TRUE %in% (grepl("^TEST", names(test.df)))) {
+               return(merge(test.df, cont.df, by = c("Expression.ID", "Source")))
           } else {
                return(test.df)
           }
@@ -155,26 +171,21 @@ findMatches <- function(dfname, df){
 }
 
 combine.groups <- function(g, m.study){
-     #initiates combined group with just the expression id. This will be the output data frame
-     combined.group <- select(g, Expression.ID)
+     #initiates combined group with just the expression id and source. This will be the output data frame
+     combined.group <- select(g, Expression.ID, Source)
      
      #initiates the all group, which will contain all individual comparisons
      #starts with the expression id and "Neither" groups, as they don't need to be compared
-     all.group <- as.data.frame(c(Expression.ID = combined.group, select(g, startswith("Neither"))))
+     all.group <- select(g, Expression.ID, Source, starts_with("NEITHER"))
      
      #separate the control and test groups
-     control.group <- select(g, startswith("Control"))
-     test.group <- select(g, startswith("Test"))
+     control.group <- select(g, starts_with("CONTROL"))
+     test.group <- select(g, starts_with("TEST"))
      
      #get user selected method for calculating difference between each test and control 
      #and method for combining all groups     
-     diff.calc <- subset(meta.study, Field == "Difference Calculation", Description, drop = TRUE)
-     comp.calc <- meta.study %>% 
-          subset(Field == "Comparison Calculation", Description, drop = TRUE) %>%
-          tolower
-     
-     #counter for adding new columns to the all group (after any current columns
-     counter <- ncol(all.group) 
+     diff.calc <- subset(m.study, Field == "Difference Calculation", Description, drop = TRUE)
+     comp.calc <- comparisonCalc(m.study)
      
      #determine diff.calc function based on user input
      if(diff.calc == "Subtraction") {
@@ -183,51 +194,55 @@ combine.groups <- function(g, m.study){
           diff.calc <- "logDiv"
      }
      
+     #counter for adding new columns to the all group (after any current columns
+     counter <- ncol(all.group)
+     
      #loop through each test and compare to each control (via the user selected method)
      for(t in test.group){
           for(c in control.group){
                counter <- counter + 1
-               all.group[, counter] <- do.call(diff.calc, x, y)
+               all.group[, counter] <- do.call(diff.calc, list(t, c))
           }
      }
      
      #combine all groups (except for expression id) via the user selected method
-     all.combined <- apply(all.group[, -1], 1, FUN = do.call(comp.calc), na.rm = TRUE)
+     #all.combined <- apply(all.group[, -1], 1, FUN = do.call(comp.calc), na.rm = TRUE)
+     all.combined <- eval(parse(text = paste0('apply(all.group, 1,', comp.calc, ', na.rm = TRUE)')))
      
      #normalize the data and add to the combined group
-     combined.group$placeholder <- all.combined / max(all.combined)
+     combined.group$placeholder <- all.combined / max(all.combined, na.rm = TRUE)
      
      #with the control groups and expression id removed, all names should be the same once the group type is removed
      #use this common name for the data title
-     names(combined.group)[2] <- names(g)[-1] %>%
-          select(-(startswith("Control"))) %>%
-          gsub("^[^|]*\\|", "") %>%
+     names(combined.group)[3] <- names(g)[-(1:2)] %>%
+          .[-grep("^CONTROL", .)] %>%
+          clipEnds("^[^|]*\\|", "\\|[^|]*$") %>%
           unique
      
-     return(all.combined)
+     return(combined.group)
 }
 
 source.name <- "GSE26249"
+exclude <- "Strain"
 
-master <- assembleSeries(source.name)
+master <- assembleSeries(source.name, ignore.field = exclude)
 
 outside.controls <- subset(master[[1]], Field == "Outside study controls", Description, drop = TRUE)
 if(outside.controls != ""){
-     master[[2]] <- merge(master[[2]], assembleSeries(outside.controls, TRUE)[[2]], by = c("Expression.ID", "Source"))
+     master[[2]] <- merge(master[[2]], assembleSeries(outside.controls, TRUE, exclude)[[2]])
 }
-
+checker <- master[[2]]
 #
 i <- 3
-sep.master <- vector()
+comb.master <- select(master[[2]], Expression.ID, Source)
 repeat{
-     group <- findMatches(names(master)[i], master)
-     group.tests <- select(group, grep("^(Test|Neither)", names(group)))
-     master <- select(master, -(names(group.tests)))
-     if(!(TRUE %in% (grepl("^Control", master[-1])))){
+     sep.master <- findMatches(names(master[[2]])[i], master[[2]])
+     master[[2]] <- select(master[[2]], -one_of(names(sep.master)[grep("^(TEST|NEITHER)", names(sep.master))]))
+     print(grepl("^CONTROL", names(master[[2]][-1])))
+     if(!(TRUE %in% (grepl("^CONTROL", names(master[[2]])[-(1:2)])))){
           break
      }
      i <- i + 1
+     comb.master <- merge(comb.master, combine.groups(sep.master, master[[1]]), by = c("Expression.ID", "Source"), all = TRUE)
 }
-#sep.master<- sapply(colnames(master), findMatches, df = master)
-
-comb.master <- sapply(sep.master, FUN = combine.groups, m.study = meta.study)
+master[[2]] <- checker
