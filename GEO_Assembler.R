@@ -173,27 +173,27 @@ findMatches <- function(dfname, df){
 combine.groups <- function(g, m.study){
      #initiates combined group with just the expression id and source. This will be the output data frame
      combined.group <- select(g, Expression.ID, Source)
-     
+
      #initiates the all group, which will contain all individual comparisons
      #starts with the expression id and "Neither" groups, as they don't need to be compared
      all.group <- select(g, Expression.ID, Source, starts_with("NEITHER"))
-     
+
      #separate the control and test groups
      control.group <- select(g, starts_with("CONTROL"))
      test.group <- select(g, starts_with("TEST"))
-     
+
      #get user selected method for calculating difference between each test and control 
      #and method for combining all groups     
      diff.calc <- subset(m.study, Field == "Difference Calculation", Description, drop = TRUE)
      comp.calc <- comparisonCalc(m.study)
-     
+
      #determine diff.calc function based on user input
      if(diff.calc == "Subtraction") {
           diff.calc <- "-"
      } else if(diff.calc == "Log2") {
           diff.calc <- "logDiv"
      }
-     
+
      #counter for adding new columns to the all group (after any current columns
      counter <- ncol(all.group)
      
@@ -204,21 +204,21 @@ combine.groups <- function(g, m.study){
                all.group[, counter] <- do.call(diff.calc, list(t, c))
           }
      }
-     
+
      #combine all groups (except for expression id) via the user selected method
      #all.combined <- apply(all.group[, -1], 1, FUN = do.call(comp.calc), na.rm = TRUE)
      all.combined <- eval(parse(text = paste0('apply(all.group, 1,', comp.calc, ', na.rm = TRUE)')))
-     
+
      #normalize the data and add to the combined group
      combined.group$placeholder <- all.combined / max(all.combined, na.rm = TRUE)
-     
+
      #with the control groups and expression id removed, all names should be the same once the group type is removed
      #use this common name for the data title
      names(combined.group)[3] <- names(g)[-(1:2)] %>%
           .[-grep("^CONTROL", .)] %>%
           clipEnds("^[^|]*\\|", "\\|[^|]*$") %>%
           unique
-     
+
      return(combined.group)
 }
 
@@ -231,18 +231,32 @@ outside.controls <- subset(master[[1]], Field == "Outside study controls", Descr
 if(outside.controls != ""){
      master[[2]] <- merge(master[[2]], assembleSeries(outside.controls, TRUE, exclude)[[2]])
 }
-checker <- master[[2]]
+
 #
 i <- 3
 comb.master <- select(master[[2]], Expression.ID, Source)
 repeat{
-     sep.master <- findMatches(names(master[[2]])[i], master[[2]])
-     master[[2]] <- select(master[[2]], -one_of(names(sep.master)[grep("^(TEST|NEITHER)", names(sep.master))]))
-     print(grepl("^CONTROL", names(master[[2]][-1])))
-     if(!(TRUE %in% (grepl("^CONTROL", names(master[[2]])[-(1:2)])))){
+     print(i)
+     print(names(master[[2]])[i])
+     print(grepl("^CONTROL", names(master[[2]])[i]))
+     if(!grepl("^CONTROL", names(master[[2]])[i])){
+          sep.master <- findMatches(names(master[[2]])[i], master[[2]])
+          print(names(sep.master))
+          master[[2]] <- select(master[[2]], -one_of(names(sep.master)[grep("^(TEST|NEITHER)", names(sep.master))]))
+          i <- i - 1
+          comb.master <- merge(comb.master, combine.groups(sep.master, master[[1]]), by = c("Expression.ID", "Source"), all = TRUE)
+     }
+     print(grepl("^CONTROL", names(master[[2]][-(1:2)])))
+
+     if(!(FALSE %in% (grepl("^CONTROL", names(master[[2]])[-(1:2)])))
+        | i == ncol(master[[2]])){
           break
      }
      i <- i + 1
-     comb.master <- merge(comb.master, combine.groups(sep.master, master[[1]]), by = c("Expression.ID", "Source"), all = TRUE)
 }
-master[[2]] <- checker
+
+write.table(comb.master, 
+          file = gzfile(paste0("C:\\Users\\", Sys.info()["user"], 
+                 "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\",
+                 "output", ".tsv.gz")),
+          sep = '\t', na = 'NA', row.names = FALSE)
