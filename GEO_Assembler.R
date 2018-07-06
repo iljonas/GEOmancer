@@ -234,11 +234,10 @@ if(outside.controls != ""){
 
 #
 i <- 3
-comb.master <- select(master[[2]], Expression.ID, Source)
+comb.master <- select(master[[2]], Expression.ID, Source) %>%
+     mutate(Expression.ID = gsub(Expression.ID, '(\\..|[a-z])$', ''))
+
 repeat{
-     print(i)
-     print(names(master[[2]])[i])
-     print(grepl("^CONTROL", names(master[[2]])[i]))
      if(!grepl("^CONTROL", names(master[[2]])[i])){
           sep.master <- findMatches(names(master[[2]])[i], master[[2]])
           print(names(sep.master))
@@ -246,7 +245,6 @@ repeat{
           i <- i - 1
           comb.master <- merge(comb.master, combine.groups(sep.master, master[[1]]), by = c("Expression.ID", "Source"), all = TRUE)
      }
-     print(grepl("^CONTROL", names(master[[2]][-(1:2)])))
 
      if(!(FALSE %in% (grepl("^CONTROL", names(master[[2]])[-(1:2)])))
         | i == ncol(master[[2]])){
