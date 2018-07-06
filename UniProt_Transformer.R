@@ -13,7 +13,7 @@ user <- as.character(Sys.info()["user"])
 
 groupedData <- read.csv("C:\\Users\\iljonas\\Downloads\\Capstone Files\\Source Files\\_Locus Names\\My_List_E-modified.txt", 
                         sep = '\t', stringsAsFactors = FALSE) %>%
-     mutate(Gene.names = gsub('; |///', ';', Gene.names)) %>%
+     mutate(Gene.names = gsub('; ', ';', Gene.names)) %>%
      mutate(Sep.names = strsplit(as.character(Gene.names), ';')) %>%
      unnest(Sep.names) %>%
      mutate(Sep.groups = strsplit(Sep.names, ' '))
