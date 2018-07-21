@@ -4,26 +4,31 @@
 
 <style type='text/css'>
 	.sampleheader{border:1px solid black;color:#000;font-weight:1000;text-align:center;height:50px;}
-	.samplerow{border:1px solid black;color:#000;font-weight:500;;text-align:center;height:30px;width:107px}
-	.mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;}
-	.mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:235px;padding-left:10px}
-	.warning{background-color:yellow}
+	.samplerow{border:1px solid black;color:#000;font-weight:500;text-align:center;height:30px;width:107px;}
+	.mainheader{border:1px solid black;color:#000;font-weight:1000;text-align:left;height:30px;width:250px;}
+	.mainrow{border:1px solid black;color:#000;font-weight:500;;text-align:left;height:30px;width:113px;padding-left:10px;}
+	.warning{background-color:yellow;}
 </style>
 
 <table id="Table1">
 	<tr>
 		<label><td class="mainheader">Study ID:</td>
-		<td class="mainrow"><input type="text" id="study id" size="8"></td>
+		<td class="mainrow"><input type="text" id="study id" size="10"></td>
 		</label>
 	</tr>
 	<tr>
 		<label><td class="mainheader">Platform ID:</td>
-		<td class="mainrow"><input type="text" id="platform id" size="8"></td>
+		<td class="mainrow"><input type="text" id="platform id" size="10"></td>
+		</label>
+	</tr>
+	<tr>
+		<label><td class="mainheader">Platform Data Column Numbers:</td>
+		<td class="mainrow"><input type="text" id="col nums" size="6"></td>
 		</label>
 	</tr>
 	<tr>
 		<label><td class="mainheader">Outside study controls:</td>
-		<td class="mainrow"><input type="text" id="study controls" size="30"></td>
+		<td class="mainrow"><input type="text" id="study controls" size="10"></td>
 		</label>
 	</tr>
 	<tr>
@@ -49,9 +54,10 @@
 	</tr>
 	<tr>
 		<label><td class="mainheader">Add N Samples:</td>
-		<td class="mainrow"><input type="number" id="sample count" size="4"></td>
+		<td class="mainrow"><input type="number" id="sample count" style="width: 5em"></td>
 		</label>
 	</tr>
+
 </table>
 
 <div>
@@ -135,15 +141,22 @@ function updateAttributes(){
 	var response = document.querySelectorAll('select, input');
 	var background = document.getElementsByTagName('td');
 	var allOpt = document.getElementsByTagName('option');
+	var t1Rows = document.getElementById("Table1").rows.length;
+	var t1Cols = document.getElementById("Table1").rows[0].cells.length;
+	var t2Cols = document.getElementById("Table2").rows[0].cells.length;
+	
 	for (var j=0; j < background.length; j++){
-		if(j >= 23){
+		if(j >= ((t1Rows * t1Cols) + t2Cols)){
 			background[j].setAttribute("class", "samplerow");
 		}
 	}
 	var idSwitch;
 	for (var i=0; i < response.length; i++) {
 		if(response[i].id == ""){
-			switch((i - 16) % 9){
+			// Determines which column in Table2 the cell lies, based on the modulo value of 
+			// the current i value divided by the number of columns
+			// Added 1 so the first value in sample id would be equal to the number of columns
+			switch((i + 1) % t2Cols){
 				case 0:
 					idSwitch = "sample id";
 					break;
@@ -173,7 +186,7 @@ function updateAttributes(){
 					break;
 			}
 			response[i].setAttribute("id", idSwitch);
-			if((i - 16) % 9 == 1) {
+			if((i + 1) % t2Cols == 1) {
 				response[i].setAttribute("style", "width: 100px");
 			} else {
 				response[i].setAttribute("size", "10");
@@ -260,6 +273,11 @@ function validateData(){
 		errorText = "Please ensure Study ID is in this format: GSE12345";
 	} else if(!document.getElementById("platform id").value.match("[Gg][Pp][Ll][0-9]+$")) {
 		errorText = "Please ensure Platform ID is in this format: GPL12345";
+	//Checks if the column numbers begin with a number other than zero, followed by either another number,
+	//a comma with a space before or after it (or no space at all), or a semicolon. 
+	//Also ensures the string ends with a number
+	} else if(!document.getElementById("col nums").value.match("^[1-9]+(\d|\s{0,1},{1}\s{0,1}|:{1})*\d*$")) {
+		errorText = "Please use only numerical values, with ranges indicated by colons (:) and different columns indicated by commas (,)";
 	} else if(document.getElementById("delim").value.length > 1) {
 		errorText = "Please enter a one character delimiter or leave blank";
 	} else {

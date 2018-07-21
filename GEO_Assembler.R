@@ -96,9 +96,9 @@ setPlatform <- function(platformID){
      read.csv(gzfile(platform.path), comment.char = "#", sep = "\t", quote = "", na.strings = "", stringsAsFactors = FALSE)
 }
 
-adjustPlatform <- function(platDF, delim){
-     new.plat <- platDF %>%
-          select(grep("^ID$|^Strain|^ORF|^SPOT_ID|^PT_ACC$", names(platDF))) %>%
+adjustPlatform <- function(platDF, colnums, delim){
+     base.plat <- eval(parse(text = paste0("select(platDF, 1, ", colnums, ")")))
+     new.plat <- base.plat %>%
           gather(key, value, -ID, na.rm = TRUE) %>%
           rowwise %>%
           mutate(value = gsub("::(?(?<=E).|[^+-])*[+-]", "", value, perl = TRUE)) %>%
@@ -127,10 +127,12 @@ assembleSeries <- function(source, is.control = FALSE, ignore.field = ''){
      platform.id <- subset(meta.study, Field == "Platform ID", Description, drop = TRUE)
      platform <- setPlatform(platform.id)
      
-     subdelim <-  subset(meta.study, Field == "In-column Delimiter", Description, drop = TRUE)
+     col.numbers <- subset(meta.study, Field == "Platform Data Column Numbers", Description, drop = TRUE)
+     
+     subdelim <- subset(meta.study, Field == "In-column Delimiter", Description, drop = TRUE)
      if(subdelim == "") {subdelim <- ","}
      
-     adj.platform <- adjustPlatform(platform, subdelim)
+     adj.platform <- adjustPlatform(platform, col.numbers, subdelim)
 
      comp.calc <- comparisonCalc(meta.study)
      adj.series <- merge(adj.platform, series, by.x = "ID", by.y = "ID_REF", all = TRUE) %>%
@@ -206,7 +208,6 @@ combine.groups <- function(g, m.study){
      }
 
      #combine all groups (except for expression id) via the user selected method
-     #all.combined <- apply(all.group[, -1], 1, FUN = do.call(comp.calc), na.rm = TRUE)
      all.combined <- eval(parse(text = paste0('apply(all.group, 1,', comp.calc, ', na.rm = TRUE)')))
 
      #normalize the data and add to the combined group
@@ -222,8 +223,10 @@ combine.groups <- function(g, m.study){
      return(combined.group)
 }
 
-source.name <- "GSE26249"
-exclude <- "Strain"
+user.input <- commandArgs(trailingOnly = TRUE)
+
+source.name <- user.input[1]
+exclude <- user.input[2]
 
 master <- assembleSeries(source.name, ignore.field = exclude)
 
@@ -234,16 +237,16 @@ if(outside.controls != ""){
 
 #
 i <- 3
-comb.master <- select(master[[2]], Expression.ID, Source) %>%
-     mutate(Expression.ID = gsub(Expression.ID, '(\\..|[a-z])$', ''))
+comb.master <- select(master[[2]], Expression.ID, Source)
 
+cat("Combined columns created:", '\n')
 repeat{
      if(!grepl("^CONTROL", names(master[[2]])[i])){
           sep.master <- findMatches(names(master[[2]])[i], master[[2]])
-          print(names(sep.master))
           master[[2]] <- select(master[[2]], -one_of(names(sep.master)[grep("^(TEST|NEITHER)", names(sep.master))]))
           i <- i - 1
           comb.master <- merge(comb.master, combine.groups(sep.master, master[[1]]), by = c("Expression.ID", "Source"), all = TRUE)
+          cat(names(comb.master)[ncol(comb.master)], '\n')
      }
 
      if(!(FALSE %in% (grepl("^CONTROL", names(master[[2]])[-(1:2)])))

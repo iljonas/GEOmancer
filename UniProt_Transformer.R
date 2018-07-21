@@ -28,7 +28,7 @@ newData <- data.frame(groupedData, split.names) %>%
      unnest(Loci, .drop = FALSE) %>%
      unnest(Genes, .drop = FALSE) %>%
      select(Search.Term:Protein.names, Loci, Genes, Organism:Protein.families, -Gene.names...primary..) %>%
-     mutate(Loci = gsub(Loci, '(\\..|[a-z])$', '')) %>%
+     mutate(Loci = gsub(Loci, '(\..|[a-z])$', '')) %>%
      mutate(Gene = gsub(Gene, '_', ''))
 
 #master <- read.csv(paste0("C:\\Users\\", Sys.info()["user"], 
