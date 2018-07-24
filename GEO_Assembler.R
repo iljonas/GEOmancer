@@ -1,6 +1,6 @@
-library(dplyr)
-library(tidyr)
-library(rvest)
+suppressMessages(library(dplyr))
+suppressMessages(library(tidyr))
+suppressMessages(library(rvest))
 
 trim <- function(t){gsub("^\\s+|\\s+$", "", t)}
 
@@ -208,7 +208,7 @@ combine.groups <- function(g, m.study){
      }
 
      #combine all groups (except for expression id) via the user selected method
-     all.combined <- eval(parse(text = paste0('apply(all.group, 1,', comp.calc, ', na.rm = TRUE)')))
+     all.combined <- eval(parse(text = paste0('apply(all.group[, -(1:2)], 1, na.rm = TRUE, FUN = ', comp.calc, ')')))
 
      #normalize the data and add to the combined group
      combined.group$placeholder <- all.combined / max(all.combined, na.rm = TRUE)
@@ -223,10 +223,14 @@ combine.groups <- function(g, m.study){
      return(combined.group)
 }
 
-user.input <- commandArgs(trailingOnly = TRUE)
+user.input <- c("GSE26249","none","Strain")#commandArgs(trailingOnly = TRUE)
 
 source.name <- user.input[1]
-exclude <- user.input[2]
+command.string <- if_else(grepl('\\.', user.input[2]), 
+                            "read.csv(paste0(folderPath(), 'Output_Files\\Exports\\', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
+                            "data.frame(Expression.ID = character(), Source = character(), stringsAsFactors = FALSE)")
+prev.comb.master <- eval(parse(text = command.string))
+exclude <- user.input[3]
 
 master <- assembleSeries(source.name, ignore.field = exclude)
 
@@ -235,10 +239,11 @@ if(outside.controls != ""){
      master[[2]] <- merge(master[[2]], assembleSeries(outside.controls, TRUE, exclude)[[2]])
 }
 
-#
-i <- 3
-comb.master <- select(master[[2]], Expression.ID, Source)
+comb.master <- master[[2]] %>%
+     select(Expression.ID, Source) %>%
+     merge(prev.comb.master, all = TRUE)
 
+i <- 3
 cat("Combined columns created:", '\n')
 repeat{
      if(!grepl("^CONTROL", names(master[[2]])[i])){

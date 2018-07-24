@@ -6,9 +6,10 @@ set Rpath="%Rbase:"=%\%Rversion%\bin\Rscript.exe"
 
 set scriptPath="C:\Users\%USERNAME%\Documents\Capstone Files\GEO-Antimicrobial-Adjunct-Project\GEO_Assembler.R"
 set /p series="Enter Series ID: "
+set /p master="Enter master file name (including file extension): "
 set /p exclusion="Enter column exclusions (no extra spaces): "
 
 echo Analyzing Series and Platform Files...
-%Rpath% %scriptPath% %series% %exclusion%
+%Rpath% %scriptPath% %series% %master% %exclusion%
 
 pause
