@@ -223,9 +223,9 @@ combine.groups <- function(g, m.study){
      return(combined.group)
 }
 
-user.input <- c("GSE26249","none","Strain")#commandArgs(trailingOnly = TRUE)
+user.input <- commandArgs(trailingOnly = TRUE)
 
-source.name <- user.input[1]
+source.name <- toupper(user.input[1])
 command.string <- if_else(grepl('\\.', user.input[2]), 
                             "read.csv(paste0(folderPath(), 'Output_Files\\Exports\\', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
                             "data.frame(Expression.ID = character(), Source = character(), stringsAsFactors = FALSE)")

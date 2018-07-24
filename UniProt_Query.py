@@ -3,7 +3,7 @@ from urllib.parse import urlencode
 from urllib.request import Request, urlopen, getproxies
 
 def getUniProtData(query, cols, fType, tType = 'ACC'):
-	url = 'http://www.uniprot.org/uploadlists/'
+	url = 'https://www.uniprot.org/uploadlists/'
 	params = {
 		'from':fType,
 		'to':tType,
@@ -42,6 +42,7 @@ cols = 'id,reviewed,protein%20names,families,organism,organism-id,sequence,genes
 cLen = cols.count(',') + 1
 
 geneData = list(csv.reader(getUniProtData(geneIDs, cols, 'genes'), delimiter = '\t'))
+print(geneData)
 newGene = [geneRow[-2] + geneRow[0:cLen] for geneRow in geneData]
 
 protData = list(csv.reader(getUniProtData(proteinIDs, cols, 'ACC+ID'), delimiter = '\t'))
