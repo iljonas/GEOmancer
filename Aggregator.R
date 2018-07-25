@@ -14,8 +14,8 @@ folderPath <- function(){
 
 #get user input for import file and read data
 getCSV <- function(file.name){
-     fullPath <- paste(file.path(folderPath(), file.name, fsep = "\\"), ".tsv.gz", sep = "")
-     return(read.csv(gzfile(fullPath), header = TRUE, sep = "\t", fill = TRUE, comment.char = "#"))
+     fullPath <- paste0(folderPath(), file.name, ".tsv.gz")
+     return(read.csv(gzfile(fullPath), header = TRUE, sep = "\t", fill = TRUE, stringsAsFactors = FALSE))
 }
 
 #creates a separate dataset from base of only positive values then analyzes base dataset for its used of columns, number of null columns, and
@@ -51,24 +51,23 @@ setCSV_analyze <- function(combReduc, fullPath){
 }
 
 #prompt user for export file name and separates data columns for various views of analyzes (methods of action and resistance types)
-setCSV <- function(cFile){
-     fileName <- readline(prompt = "Enter filename: ")
+setCSV <- function(cFile, oFile){
+     fileName <- gsub('[, ]', '_', oFile)
      #some row genes are not unique by R's non-case sensitive standards and cannot be used as rows. This combines genes with the row number so they become unique
      row.names(cFile) <- paste(cFile[,1],row.names(cFile),sep=";")
      #first row, containing IDs, cannot be included because it cannot be aggregated. Not included with any of these analyses and is saved as row name
      #send full dataset and write to base desired file name
-     setCSV_analyze(cFile[,-1], paste(file.path(".\\", fileName), ".tsv.gz", sep = ""))
+     setCSV_analyze(cFile[,-1], paste0(folderPath(), fileName, ".txt"))
 }
 
-#run program
-main <- function(){
-     user.input <- commandArgs(trailingOnly = TRUE)
-     #read the tsv file based on file name provided by user, then select the grouping column and data columns
-     source.file <- getCSV(user.input[1]) %>%
-          select(user.input[2], user.input[3])
-     agg.file <- eval(parse(text = paste0('aggregate(source.file[2:ncol(source.file)], by = list(IDs = source.file$Expression.ID), FUN = ',
-                        user.input[4], ', na.rm=TRUE)')))
-     setCSV(agg.file)
-}
+user.input <- c('Raw_Master_File3', '3', '13:94', 'mean', 'output')
 
-main()
+source.file <- getCSV(user.input[1])
+filter.file <- eval(parse(text = paste0('select(source.file,', user.input[2], ',', user.input[3], ')')))
+primary.names <- eval(parse(text = paste0('names(select(source.file,', user.input[2], '))')))
+
+grouped.file <- eval(parse(text = paste0("group_by(filter.file, ", primary.names, ')')))
+agg.file <- eval(parse(text = paste0("summarize_all(grouped.file, funs(", tolower(user.input[4]), "(., na.rm = TRUE)))")))
+agg.file[is.na(agg.file)] <- NA
+
+setCSV(as.data.frame(agg.file), paste(user.input[1], user.input[5], sep = '-'))
