@@ -1,6 +1,7 @@
 suppressMessages(library(dplyr))
 suppressMessages(library(tidyr))
 suppressMessages(library(rvest))
+options(warn = -1)
 
 trim <- function(t){gsub("^\\s+|\\s+$", "", t)}
 
@@ -219,6 +220,8 @@ combine.groups <- function(g, m.study){
           .[-grep("^CONTROL", .)] %>%
           clipEnds("^[^|]*\\|", "\\|[^|]*$") %>%
           unique
+     #remove NAs
+     names(combined.group)[3] <- gsub('\\|NA', '', names(combined.group)[3])
 
      return(combined.group)
 }
