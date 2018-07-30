@@ -74,16 +74,17 @@
 			<td class="sampleheader">Species</td>
 			<td class="sampleheader">Strain</td>
 			<td class="sampleheader">Growth_Phase</td>
-			<td class="sampleheader">Other</td>
+			<td class="sampleheader">Other_General</td>
 			<td class="sampleheader">Treatment</td>
 			<td class="sampleheader">Dosage</td>
 			<td class="sampleheader">Exposure_Time</td>
+			<td class="sampleheader">Other_Treatment</td>
 		</tr>
 	</thead>
   
 	<tbody>
 	<tr>
-		<td class="samplerow"><input type="text" id="sample id" size="10" pattern="GSM([0-9]{4,5})"></td> 		
+		<td class="samplerow"><input type="text" id="sample id" size="10"></td> 		
     <td class="samplerow"><select id="group" style="width: 100px">
 			<option value="Control">Control
 			<option value="Test">Test
@@ -92,10 +93,11 @@
 		<td class="samplerow"><input type="text" id="species" size="10"></td>
 		<td class="samplerow"><input type="text" id="strain" size="10"></td>
 		<td class="samplerow"><input type="text" id="growth phase" size="10"></td>
-		<td class="samplerow"><input type="text" id="other" size="10"></td>
+		<td class="samplerow"><input type="text" id="other gen" size="10"></td>
 		<td class="samplerow"><input type="text" id="treatment" size="10"></td>
 		<td class="samplerow"><input type="text" id="dosage" size="10"></td>
 		<td class="samplerow"><input type="text" id="exposure time" size="10"></td>
+		<td class="samplerow"><input type="text" id="other treat" size="10"></td>
 	</tr>  
 	</tbody>
 </table>
@@ -110,7 +112,7 @@ function addRows(rowNum){
   
 	for(var i = 0; i < rowNum; i++){
 		tr = document.createElement("tr");
-		for(var j = 0; j < 9; j++){
+		for(var j = 0; j < 10; j++){
 			td = document.createElement("td");
 			if(j == 1){
 				cell = document.createElement("select");
@@ -144,19 +146,21 @@ function updateAttributes(){
 	var t1Rows = document.getElementById("Table1").rows.length;
 	var t1Cols = document.getElementById("Table1").rows[0].cells.length;
 	var t2Cols = document.getElementById("Table2").rows[0].cells.length;
+	var offset = t2Cols - t1Rows;
 	
-	for (var j=0; j < background.length; j++){
+	for (var j = 0; j < background.length; j++){
 		if(j >= ((t1Rows * t1Cols) + t2Cols)){
 			background[j].setAttribute("class", "samplerow");
 		}
 	}
 	var idSwitch;
-	for (var i=0; i < response.length; i++) {
+	for (var i = t1Rows; i < response.length; i++) {
 		if(response[i].id == ""){
 			// Determines which column in Table2 the cell lies, based on the modulo value of 
 			// the current i value divided by the number of columns
-			// Added 1 so the first value in sample id would be equal to the number of columns
-			switch((i + 1) % t2Cols){
+			// offsets at t1Rows to ignore the input options in Table1
+			// Added the offset value so sample ids would line up to the number of columns in Table2
+			switch((i + offset) % t2Cols){
 				case 0:
 					idSwitch = "sample id";
 					break;
@@ -173,7 +177,7 @@ function updateAttributes(){
 					idSwitch = "growth phase";
 					break;
 				case 5:
-					idSwitch = "other";
+					idSwitch = "other gen";
 					break;
 				case 6:
 					idSwitch = "treatment";
@@ -184,9 +188,12 @@ function updateAttributes(){
 				case 8:
 					idSwitch = "exposure time";
 					break;
+				case 9:
+					idSwitch = "other treat";
+					break;
 			}
 			response[i].setAttribute("id", idSwitch);
-			if((i + 1) % t2Cols == 1) {
+			if((i + offset) % t2Cols == 1) {
 				response[i].setAttribute("style", "width: 100px");
 			} else {
 				response[i].setAttribute("size", "10");
