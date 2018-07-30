@@ -9,8 +9,7 @@ logDiv <- function(x, y){log(x / y, 2)}
 
 folderPath <- function(){
      userID <- Sys.info()["user"]
-     folder <- paste0("C:\\Users\\", userID, 
-                           "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\GEO_Source_Files\\")
+     folder <- paste('C:', 'Users', userID, 'Documents', 'Capstone Files', 'GEO-Antimicrobial-Adjunct-Project', sep = '\\')
 }
 
 comparisonCalc <- function(calc.source){
@@ -111,7 +110,7 @@ adjustPlatform <- function(platDF, colnums, delim){
 }
 
 assembleSeries <- function(source, is.control = FALSE, ignore.field = ''){
-     meta.source <- paste0(folderPath(), "GEO_Forms\\",
+     meta.source <- paste0(folderPath(), "\\GEO_Forms\\",
                            source, ".tsv")
      
      meta.study <- setMeta.study(meta.source)
@@ -158,11 +157,9 @@ findMatches <- function(dfname, df){
                                                      #gsub("^[^|]*\\|", "", names(df)) == gsub("^[^|]*\\|", "", dfname)))
           cont.df <- df %>% 
                select(-(grep("^(TEST|NEITHER)", names(df)))) %>%
-               #setNames(gsub("^[^|]*\\|", "", names(.))) %>%
                select(Expression.ID, Source, 
-                      which(unlist(lapply(names(.), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "([^|]*\\|){3}[^|]*$"))
-                                 == clipEnds(dfname, "^[^|]*\\|", "([^|]*\\|){3}[^|]*$")))
-                                 #gsub("([^|]*\\|){3}[^|]*$", "", dfname) == gsub("([^|]*\\|){3}[^|]*$", "", names(.))))
+                      which(unlist(lapply(names(.), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "([^|]*\\|)43}[^|]*$"))
+                                 == clipEnds(dfname, "^[^|]*\\|", "([^|]*\\|){4}[^|]*$")))
 
           #If there are no Test columns in the data frame, you don't need the controls. So these groups are only merged if a Test frame is present
           if(TRUE %in% (grepl("^TEST", names(test.df)))) {
@@ -230,7 +227,7 @@ user.input <- commandArgs(trailingOnly = TRUE)
 
 source.name <- toupper(user.input[1])
 command.string <- if_else(grepl('\\.', user.input[2]), 
-                            "read.csv(paste0(folderPath(), 'Output_Files\\Exports\\', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
+                            "read.csv(paste0(folderPath(), '\\Output_Files\\Exports\\', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
                             "data.frame(Expression.ID = character(), Source = character(), stringsAsFactors = FALSE)")
 prev.comb.master <- eval(parse(text = command.string))
 exclude <- user.input[3]
