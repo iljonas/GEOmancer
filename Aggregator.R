@@ -9,13 +9,14 @@ options(warn = -1)
 
 folderPath <- function(){
      userID <- Sys.info()["user"]
-     folder <- paste0("C:\\Users\\", userID, 
-                      "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\")
+     folder <- file.path('C:', 'Users', userID, 'Documents', 'Capstone Files',
+                         'GEO-Antimicrobial-Adjunct-Project', 'Output_Files', 'Exports')
 }
 
 #get user input for import file and read data
 getCSV <- function(file.name){
-     fullPath <- paste0(folderPath(), file.name, ".tsv.gz")
+     fullPath <- paste0(file.path(folderPath(), file.name), 
+                        ".tsv.gz")
      return(read.csv(gzfile(fullPath), header = TRUE, sep = '\t', fill = TRUE, stringsAsFactors = FALSE))
 }
 
@@ -39,7 +40,8 @@ getSubsetting <- function(df, fPath){
 setCSV <- function(cFile, oFile, base.names){
      fileName <- gsub('[, ]', '_', oFile)
      
-     dest.path <- paste0(folderPath(), "Summaries\\", fileName, ".tsv.gz")
+     dest.path <- paste0(file.path(folderPath(), 'Summaries', fileName), 
+                         ".tsv.gz")
      setCSV_analyze(cFile, dest.path)
      getSubsetting(cFile, dest.path)
 }
@@ -89,4 +91,6 @@ grouped.file <- eval(parse(text = paste0("group_by(filter.file, ", primary.names
 agg.file <- eval(parse(text = paste0("summarize_all(grouped.file, funs(", tolower(user.input[4]), "(., na.rm = TRUE)))")))
 agg.file[is.na(agg.file)] <- NA
 
-setCSV(as.data.frame(agg.file), paste(user.input[1], user.input[5], sep = '-'))
+combined.names <- paste(primary.names, collapse = '_')
+setCSV(as.data.frame(agg.file), paste(combined.names, user.input[1], user.input[5], 
+                                      sep = '-'))
