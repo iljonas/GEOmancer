@@ -6,13 +6,13 @@
 #Comparison Calculation	Mean
 #In-column Delimiter	,
 #Add N Samples	8
-Sample_ID	Group	Species	Strain	Growth_Phase	Other	Treatment	Dosage	Exposure_Time
-GSM643973	Test	S. aureus	2818	late log		Daptomycin	250ng.mL	120min
-GSM644234	Test	S. aureus	2818	late log		Daptomycin	2ug.mL	120min
-GSM644331	Test	S. aureus	2818	late log		Daptomycin	4ug.mL	120min
-GSM644338	Test	S. aureus	2818	early stationary		Daptomycin	2ug.mL	160min
-GSM644339	Test	S. aureus	2818	early stationary		Daptomycin	4ug.mL	160min
-GSM644340	Test	S. aureus	2818	early stationary		Daptomycin	250ng.mL	160min
-GSM644341	Test	S. aureus	2818	mid log		Daptomycin	250ng.mL	60min
-GSM644390	Test	S. aureus	2818	mid log		Daptomycin	2ug.mL	60min
-GSM644391	Test	S. aureus	2818	mid log		Daptomycin	4ug.mL	60min
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM643973	Test	S. aureus	2818	late log		Daptomycin	250ng.mL	120min	Bactericidal,MRSA
+GSM644234	Test	S. aureus	2818	late log		Daptomycin	2ug.mL	120min	Bactericidal,MRSA
+GSM644331	Test	S. aureus	2818	late log		Daptomycin	4ug.mL	120min	Bactericidal,MRSA
+GSM644338	Test	S. aureus	2818	early stationary		Daptomycin	2ug.mL	160min	Bactericidal,MRSA
+GSM644339	Test	S. aureus	2818	early stationary		Daptomycin	4ug.mL	160min	Bactericidal,MRSA
+GSM644340	Test	S. aureus	2818	early stationary		Daptomycin	250ng.mL	160min	Bactericidal,MRSA
+GSM644341	Test	S. aureus	2818	mid log		Daptomycin	250ng.mL	60min	Bactericidal,MRSA
+GSM644390	Test	S. aureus	2818	mid log		Daptomycin	2ug.mL	60min	Bactericidal,MRSA
+GSM644391	Test	S. aureus	2818	mid log		Daptomycin	4ug.mL	60min	Bactericidal,MRSA
