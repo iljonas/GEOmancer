@@ -258,7 +258,7 @@ function exportTableToCSV(filename) {
 	for (var j = (t1Rows * t1Cols) + 2; j < data.length; j++){
 		if(data[j].tagName == "INPUT" || data[j].tagName == "SELECT") {
 			rows.push(data[j].value);
-			if(data[j].id == "exposure time") {
+			if(data[j].id == "other treat") {
 				csv.push(rows.join('\t'));
 				rows = [];
 			}
