@@ -9,7 +9,7 @@ logDiv <- function(x, y){log(x / y, 2)}
 
 folderPath <- function(){
      userID <- Sys.info()["user"]
-     folder <- paste('C:', 'Users', userID, 'Documents', 'Capstone Files', 'GEO-Antimicrobial-Adjunct-Project', sep = '\\')
+     folder <- file.path('C:', 'Users', userID, 'Documents', 'Capstone Files', 'GEO-Antimicrobial-Adjunct-Project')
 }
 
 comparisonCalc <- function(calc.source){
@@ -40,8 +40,9 @@ setMeta.samples <- function(source){
 }
 
 setSeries <- function(seriesID, m.samples){
-     series.folder <- paste0(folderPath(), "\\GEO_Series")
-     series.path <- paste0(series.folder ,"\\" , toupper(seriesID), ".txt.gz")
+     series.folder <- file.path(folderPath(), 'GEO_Source_Files', 'GEO_Series')
+     series.path <- file.path(series.folder, toupper(seriesID)) %>%
+          paste0('.txt.gz')
      
      if(!file.exists(series.path)){
           ftp.path <- paste("ftp://ftp.ncbi.nlm.nih.gov/geo/series", 
@@ -60,8 +61,7 @@ setSeries <- function(seriesID, m.samples){
      if(!(FALSE %in%
           (sapply(names(temp.series)[-1], function(x){trim(x)}) 
            == sapply(row.names(m.samples), function(x){trim(x)})))) {
-          names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(trim(toupper(x)), collapse = "|")})
-          
+          names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(toupper(x), collapse = "|")})
           sep.num <- ncol(m.samples) - 1
           for (i in 2:ncol(temp.series)){
                if(nchar(names(temp.series)[i]) - nchar(gsub('\\|', '', names(temp.series)[i])) == sep.num){
@@ -80,8 +80,9 @@ setSeries <- function(seriesID, m.samples){
 }
 
 setPlatform <- function(platformID){
-     platform.folder <- paste0(folderPath(), "\\GEO_Platforms")
-     platform.path <- paste0(platform.folder ,"\\" , toupper(platformID), ".txt.gz")
+     platform.folder <- file.path(folderPath(), 'GEO_Source_Files', 'GEO_Platforms')
+     platform.path <- file.path(platform.folder, toupper(platformID)) %>%
+          paste0('.txt.gz')
      
      if(!file.exists(platform.path)) {
           pURL <- paste0("https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?view=data&acc=", toupper(platformID))
@@ -110,14 +111,17 @@ adjustPlatform <- function(platDF, colnums, delim){
 }
 
 assembleSeries <- function(source, is.control = FALSE, ignore.field = ''){
-     meta.source <- paste0(folderPath(), "\\GEO_Forms\\",
-                           source, ".tsv")
+     meta.source <- folderPath() %>%
+          file.path('GEO_Source_Files', 'GEO_Forms', source) %>%
+          paste0('.tsv')
      
      meta.study <- setMeta.study(meta.source)
-     meta.samples <- select(setMeta.samples(meta.source), ifelse(ignore.field != '', -one_of(ignore.field), everything()))
+     meta.samples <- setMeta.samples(meta.source)
+     if(!is.na(ignore.field)){
+          meta.samples <- select(meta.samples, -one_of(ignore.field))
+     }
      
      series.id <- subset(meta.study, Field == "Study ID", Description, drop = TRUE)
-
      series <- setSeries(series.id, meta.samples)
      
      if(is.control == TRUE){
@@ -158,7 +162,7 @@ findMatches <- function(dfname, df){
           cont.df <- df %>% 
                select(-(grep("^(TEST|NEITHER)", names(df)))) %>%
                select(Expression.ID, Source, 
-                      which(unlist(lapply(names(.), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "([^|]*\\|)43}[^|]*$"))
+                      which(unlist(lapply(names(.), FUN = clipEnds, exp1 = "^[^|]*\\|", exp2 = "([^|]*\\|){4}[^|]*$"))
                                  == clipEnds(dfname, "^[^|]*\\|", "([^|]*\\|){4}[^|]*$")))
 
           #If there are no Test columns in the data frame, you don't need the controls. So these groups are only merged if a Test frame is present
@@ -173,11 +177,18 @@ findMatches <- function(dfname, df){
 combine.groups <- function(g, m.study){
      #initiates combined group with just the expression id and source. This will be the output data frame
      combined.group <- select(g, Expression.ID, Source)
-
+     
      #initiates the all group, which will contain all individual comparisons
      #starts with the expression id and "Neither" groups, as they don't need to be compared
-     all.group <- select(g, Expression.ID, Source, starts_with("NEITHER"))
-
+     #all.group <- select(g, Expression.ID, Source, matches("^NEITHER"))
+     #if(TRUE %in% grepl("^NEITHER", names(g))){
+     #     all.group <- select(g, Expression.ID, Source, matches("^NEITHER"))
+     #}
+     if(TRUE %in% grepl("^NEITHER", names(g))){
+          all.group <- select(g, Expression.ID, Source, starts_with('NEITHER'))
+     } else {
+          all.group <- combined.group
+     }
      #separate the control and test groups
      control.group <- select(g, starts_with("CONTROL"))
      test.group <- select(g, starts_with("TEST"))
@@ -204,10 +215,9 @@ combine.groups <- function(g, m.study){
                all.group[, counter] <- do.call(diff.calc, list(t, c))
           }
      }
-
      #combine all groups (except for expression id) via the user selected method
      all.combined <- eval(parse(text = paste0('apply(all.group[, -(1:2)], 1, na.rm = TRUE, FUN = ', comp.calc, ')')))
-
+     
      #normalize the data and add to the combined group
      combined.group$placeholder <- all.combined / max(all.combined, na.rm = TRUE)
 
@@ -218,8 +228,8 @@ combine.groups <- function(g, m.study){
           clipEnds("^[^|]*\\|", "\\|[^|]*$") %>%
           unique
      #remove NAs
-     names(combined.group)[3] <- gsub('\\|NA', '', names(combined.group)[3])
-
+     names(combined.group)[3] <- gsub('\\|NA', '', names(combined.group)[3]) %>%
+          make.names()
      return(combined.group)
 }
 
@@ -227,7 +237,7 @@ user.input <- commandArgs(trailingOnly = TRUE)
 
 source.name <- toupper(user.input[1])
 command.string <- if_else(grepl('\\.', user.input[2]), 
-                            "read.csv(paste0(folderPath(), '\\Output_Files\\Exports\\', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
+                            "read.csv(file.path(folderPath(), 'Output_Files', 'Exports', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
                             "data.frame(Expression.ID = character(), Source = character(), stringsAsFactors = FALSE)")
 prev.comb.master <- eval(parse(text = command.string))
 exclude <- user.input[3]

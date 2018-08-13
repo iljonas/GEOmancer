@@ -22,55 +22,57 @@ def getUniProtData(query, cols, fType, tType = 'ACC'):
 
 geneIDs = []
 proteinIDs = []
-masterPath = "C:\\Users\\" + os.getlogin() + "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\" + "output" + ".tsv.gz"
+masterPath = "C:\\Users\\" + os.getlogin() + "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\output.tsv.gz"
+
 with gzip.open(masterPath, 'rt') as mFile:
 	mReader = mFile.readlines()
 	masterData = [[col for col in row.rstrip('\n').split('\t')] for row in mReader]
 mFile.close()
 
 for mRow in masterData:
-		if mRow[1] == '"Gene"':
-			geneIDs.append(mRow[0])
-		else:
-			proteinIDs.append(mRow[0])
+	if mRow[1] == '"Gene"':
+		geneIDs.append(mRow[0].replace('"', ''))
+	else:
+		proteinIDs.append(mRow[0].replace('"', ''))
 
-
-geneIDs = ''
-proteinIDs = 'A5JQI0 O86490 A0A0H3JWR1 O54520'
 cols = 'id,reviewed,protein%20names,families,organism,organism-id,sequence,genes'
 
 cLen = cols.count(',') + 1
 
-geneData = list(csv.reader(getUniProtData(geneIDs, cols, 'genes'), delimiter = '\t'))
-print(geneData)
-newGene = [geneRow[-2] + geneRow[0:cLen] for geneRow in geneData]
+if(len(geneIDs) > 0):
+	geneIDs = ' '.join(geneIDs)
+	geneData = list(csv.reader(getUniProtData(geneIDs, cols, 'GENENAME'), delimiter = '\t'))
+	newGene = ['\t'.join(geneRow[-2] + geneRow[0:-3]) for geneRow in geneData if len(geneRow) > 2]
+	print(newGene)
 
-protData = list(csv.reader(getUniProtData(proteinIDs, cols, 'ACC+ID'), delimiter = '\t'))
-newProt = [protRow[-2] + protRow[0:cLen] for protRow in protData]
-obsIDs = []
+# if(len(proteinIDs) > 0):
+	# proteinIDs = ' '.join(proteinIDs)
+	# protData = list(csv.reader(getUniProtData(proteinIDs, cols, 'ACC+ID'), delimiter = '\t'))
+	# newProt = [protRow[-2] + protRow[0:cLen] for protRow in protData]
+	# obsIDs = []
 
-for i in range(len(protData) - 1):
-	if not protData[i][1]:
-		print(protData[i][2])
-		protData[i][2] = protData[i][2][len("Merged into ")  : -1]
-		obsIDs.append(protData[i][0,2])
-		del protData[i]
+	# for i in range(len(protData) - 1):
+		# if not protData[i][1]:
+			# print(protData[i][2])
+			# protData[i][2] = protData[i][2][len("Merged into ")  : -1]
+			# obsIDs.append(protData[i][0,2])
+			# del protData[i]
 
-updatedData = list(csv.reader(getUniProtData(obsIDs[1], cols, 'ACC+ID'), delimiter = '\t'))
-newUpdate = []
-for obsRow in obsIDs:
-	for updatedRow in updatedData:
-		if obsIDs[1] == updatedRow[0]:
-			newUpdate.append(obsIDs[0] + updatedRow)
-			break
+	# updatedData = list(csv.reader(getUniProtData(obsIDs[1], cols, 'ACC+ID'), delimiter = '\t'))
+	# newUpdate = []
+	# for obsRow in obsIDs:
+		# for updatedRow in updatedData:
+			# if obsIDs[1] == updatedRow[0]:
+				# newUpdate.append(obsIDs[0] + updatedRow)
+				# break
 
 newGene[0][0] = "Original Entry"
-#with open("C:\\Users\\Isaac\\Desktop\\testFile.txt", 'w') as outFile:
-#	outFile.write(newGene)
+with open("C:\\Users\\iljonas\\Desktop\\testFile.txt", 'w') as outFile:
+	outFile.write('\n'.join(['\t'.join([str(element) for element in row]) for row in geneData]))
 #	outFile.write(newProt[1:])
 #	outFile.write(newUpdate[1:])
-#outFile.close()
-#print(page)
+outFile.close()
+print(page)
 
 
 #So um, query for genes to ACC and ACC+ID to ACC
