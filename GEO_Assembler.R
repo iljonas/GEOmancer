@@ -236,8 +236,10 @@ combine.groups <- function(g, m.study){
 user.input <- commandArgs(trailingOnly = TRUE)
 
 source.name <- toupper(user.input[1])
-command.string <- if_else(grepl('\\.', user.input[2]), 
-                            "read.csv(file.path(folderPath(), 'Output_Files', 'Exports', user.input[2]), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
+output.path <- paste(file.path(folderPath(), 'Output_Files', 'Exports', user.input[2]), 'tsv', 'gz', sep = '.')
+
+command.string <- if_else(file.exists(output.path), 
+                            "read.csv(gzfile(output.path), sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)",
                             "data.frame(Expression.ID = character(), Source = character(), stringsAsFactors = FALSE)")
 prev.comb.master <- eval(parse(text = command.string))
 exclude <- user.input[3]
@@ -271,8 +273,4 @@ repeat{
      i <- i + 1
 }
 
-write.table(comb.master, 
-          file = gzfile(paste0("C:\\Users\\", Sys.info()["user"], 
-                 "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\",
-                 "output", ".tsv.gz")),
-          sep = '\t', na = 'NA', row.names = FALSE)
+write.table(comb.master, file = gzfile(output.path), sep = '\t', na = 'NA', row.names = FALSE)

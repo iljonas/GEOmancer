@@ -1,5 +1,5 @@
-library(dplyr)
-library(tidyr)
+suppressMessages(library(dplyr))
+suppressMessages(library(tidyr))
 
 geneLocSep <- function(gList){
      gList <- list(gList)
@@ -10,35 +10,38 @@ geneLocSep <- function(gList){
 }
 
 user <- as.character(Sys.info()["user"])
+user.input <- commandArgs(trailingOnly = TRUE)
 
-groupedData <- read.csv("C:\\Users\\iljonas\\Downloads\\Capstone Files\\Source Files\\_Locus Names\\My_List_E-modified.txt", 
-                        sep = '\t', stringsAsFactors = FALSE) %>%
+primary.pathway <- file.path('C:', 'Users', user, 'Documents', 'Capstone Files', 'GEO-Antimicrobial-Adjunct-Project', 'Output_Files')
+uniprot.pathway <- file.path(primary.pathway, 'UniProt_Downloads', 'uniProt-') %>%
+     paste0(user.input[1], '.tsv.gz')
+master.pathway <- file.path(primary.pathway, 'Exports', user.input[1]) %>%
+     paste0('.tsv.gz')
+
+groupedData <- read.csv(gzfile(uniprot.pathway), sep = '\t', stringsAsFactors = FALSE) %>%
+     unnest(Expression.ID = strsplit(as.character(Expression.ID), ',')) %>%
      mutate(Gene.names = gsub('; ', ';', Gene.names)) %>%
-     mutate(Sep.names = strsplit(as.character(Gene.names), ';')) %>%
-     unnest(Sep.names) %>%
+     unnest(Sep.names = strsplit(as.character(Gene.names), ';')) %>%
      mutate(Sep.groups = strsplit(Sep.names, ' '))
 
 split.names <- sapply(groupedData$Sep.groups, geneLocSep) %>%
      t %>%
      as.data.frame
-
 names(split.names) <- c("Genes", "Loci")
 
 newData <- data.frame(groupedData, split.names) %>%
      unnest(Loci, .drop = FALSE) %>%
      unnest(Genes, .drop = FALSE) %>%
-     select(Search.Term:Protein.names, Loci, Genes, Organism:Protein.families, -Gene.names...primary..) %>%
-     mutate(Loci = gsub(Loci, '(\..|[a-z])$', '')) %>%
-     mutate(Gene = gsub(Gene, '_', ''))
+     select(Expression.ID, Entry:Protein.names, Loci, Genes, Protein.families:Sequence) %>%
+     mutate(Loci = gsub('(\\..|[a-z])$', '', Loci)) %>%
+     mutate(Gene = gsub('_', '', Genes))
 
-#master <- read.csv(paste0("C:\\Users\\", Sys.info()["user"], 
-#                "\\Documents\\Capstone Files\\GEO-Antimicrobial-Adjunct-Project\\Output_Files\\Exports\\output.tsv.gz"), 
-#                sep = '\t') %>%
+master <- read.csv(gzfile(master.pathway), sep = '\t', stringsAsFactors = FALSE)
 
-master <- read.csv("C:\\Users\\iljonas\\Downloads\\Capstone Files\\Source Files\\_Averaged Files\\Combined_Results-Temp.txt", 
-                    sep = '\t', stringsAsFactors = FALSE)
-
-uni.master <- merge(newData, master, by.x = 'Search.Term', by.y = 'ï..Name', all.y = TRUE) %>%
+uni.master <- merge(newData, master, by = 'Expression.ID', all.y = TRUE) %>%
      unique %>% 
-     mutate(Search.Term = if_else(!is.na(Loci), Loci, if_else(Source == 'Protein' & !is.na(Entry) & Search.Term != Entry
-                                                              , Entry, Search.Term)))
+     mutate(Expression.ID = if_else(!is.na(Loci), Loci, if_else(Source == 'Protein' & !is.na(Entry) & Expression.ID != Entry
+                                                              , Entry, Expression.ID)))
+
+write.table(uni.master, file = gzfile(paste0(file.path(primary.pathway, 'Exports', 'master-'), user.input[1], '.tsv.gz')),
+            sep = '\t', na = 'NA', row.names = FALSE)
