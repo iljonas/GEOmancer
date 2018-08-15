@@ -6,7 +6,7 @@ set Rbase="C:\Program Files\R"
 for /F "tokens=*" %%i in ('dir %Rbase% /A:D /O:D /T:C /B') do set Rversion=%%i
 set Rpath="%Rbase:"=%\%Rversion%\bin\Rscript.exe"
 
-set sourcePath="C:\Users\%USERNAME%\Documents\Capstone Files\GEO-Antimicrobial-Adjunct-Project
+set sourcePath="C:\Users\%USERNAME%\Documents\GEOmancer\Scripts
 set queryPath=%sourcePath%\UniProt_Query.py"
 set transformPath=%sourcePath%\UniProt_Transformer.R"
 
