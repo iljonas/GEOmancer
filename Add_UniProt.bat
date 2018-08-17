@@ -1,6 +1,8 @@
 @echo off
 title UniProt Query Runner
-set pyPath=C:\Users\%USERNAME%\AppData\Local\Programs\Python\Python36-32\python.exe
+set pyBase=C:\Users\%USERNAME%\AppData\Local\Programs\Python
+for /F "tokens=*" %% in ('dir %pyBase% /A:D /O:D /T:C /B') do set pyVersion=%%i
+set pyPath=%pyBase%\%pyVersion%\python.exe
 
 set Rbase="C:\Program Files\R"
 for /F "tokens=*" %%i in ('dir %Rbase% /A:D /O:D /T:C /B') do set Rversion=%%i
