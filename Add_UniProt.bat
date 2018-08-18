@@ -1,24 +1,25 @@
 @echo off
-title UniProt Query Runner
-set pyBase=C:\Users\%USERNAME%\AppData\Local\Programs\Python
-for /F "tokens=*" %% in ('dir %pyBase% /A:D /O:D /T:C /B') do set pyVersion=%%i
-set pyPath=%pyBase%\%pyVersion%\python.exe
+TITLE Add_UniProt
 
-set Rbase="C:\Program Files\R"
-for /F "tokens=*" %%i in ('dir %Rbase% /A:D /O:D /T:C /B') do set Rversion=%%i
-set Rpath="%Rbase:"=%\%Rversion%\bin\Rscript.exe"
+C:\Users\%USERNAME%\Documents\GEOmancer\Scripts\R_Location.bat > tempFile
+SET /P Rpath= < tempFile
 
-set sourcePath="C:\Users\%USERNAME%\Documents\GEOmancer\Scripts
-set queryPath=%sourcePath%\UniProt_Query.py"
-set transformPath=%sourcePath%\UniProt_Transformer.R"
+C:\Users\%USERNAME%\Documents\GEOmancer\Scripts\Python_Location.bat > tempFile
+SET /P pyPath= < tempFile
 
-set /p input="Enter source file name (do not include file extension): "
+DEL tempFile
 
-echo Running Expression IDs through UniProt
+SET sourcePath="C:\Users\%USERNAME%\Documents\GEOmancer\Scripts
+SET queryPath=%sourcePath%\UniProt_Query.py"
+SET transformPath=%sourcePath%\UniProt_Transformer.R"
+
+SET /P input="Enter source file name (do not include file extension): "
+
+ECHO Running Expression IDs through UniProt
 %pyPath% %queryPath% %input%
 
-echo.
-echo Combining UniProt output with project master file
+ECHO.
+ECHO Combining UniProt output with project master file
 %RPath% %transformPath% %input%
 
-pause
+PAUSE

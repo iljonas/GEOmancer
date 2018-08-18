@@ -1,15 +1,15 @@
-@echo off
-title GEO Assembler Runner
-set Rbase="C:\Program Files\R"
-for /F "tokens=*" %%i in ('dir %Rbase% /A:D /O:D /T:C /B') do set Rversion=%%i
-set Rpath="%Rbase:"=%\%Rversion%\bin\Rscript.exe"
+@ECHO off
+TITLE Chart_Builder
 
-set scriptPath="C:\Users\%USERNAME%\Documents\GEOmancer\Scripts\GEO_Assembler.R"
-set /p series="Enter Series ID: "
-set /p master="Enter master file name (do not include file extension): "
-set /p exclusion="Enter column exclusions (no extra spaces): "
+C:\Users\%USERNAME%\Documents\GEOmancer\Scripts\R_Location.bat > tempFile
+SET /P Rpath= < tempFile
 
-echo Analyzing Series and Platform Files...
+SET scriptPath="C:\Users\%USERNAME%\Documents\GEOmancer\Scripts\GEO_Assembler.R"
+SET /P series="Enter Series ID: "
+SET /P master="Enter master file name (do not include file extension): "
+SET /P exclusion="Enter column exclusions (no extra spaces): "
+
+ECHO Analyzing Series and Platform Files...
 %Rpath% %scriptPath% %series% %master% %exclusion%
 
-pause
+PAUSE
