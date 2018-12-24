@@ -1,0 +1,24 @@
+﻿#Study ID	GSE65209
+#Platform ID	GPL7137
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	,
+#Add N Samples	14
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM1589603	Control	S. aureus	USA300 FPR3757	log					
+GSM1589604	Control	S. aureus	USA300 FPR3757	log					
+GSM1589605	Control	S. aureus	USA300 FPR3757	log					
+GSM1589606	Control	S. aureus	USA300 FPR3757	transient					
+GSM1589607	Control	S. aureus	USA300 FPR3757	transient					
+GSM1589608	Control	S. aureus	USA300 FPR3757	transient					
+GSM1589609	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 0.9|Bacteriostatic,MRSA
+GSM1589610	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 0.9|Bacteriostatic,MRSA
+GSM1589611	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 0.9|Bacteriostatic,MRSA
+GSM1589612	Test	S. aureus	USA300 FPR3757	stationary		Linezolid	5 μg/mL		OD 1.8|Bacteriostatic,MRSA
+GSM1589613	Test	S. aureus	USA300 FPR3757	stationary		Linezolid	5 μg/mL		OD 1.8|Bacteriostatic,MRSA
+GSM1589614	Test	S. aureus	USA300 FPR3757	stationary		Linezolid	5 μg/mL		OD 1.8|Bacteriostatic,MRSA
+GSM1589615	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 2.2|Bacteriostatic,MRSA
+GSM1589616	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 2.2|Bacteriostatic,MRSA
+GSM1589617	Test	S. aureus	USA300 FPR3757	transient		Linezolid	5 μg/mL		OD 2.2|Bacteriostatic,MRSA

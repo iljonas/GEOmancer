@@ -1,0 +1,21 @@
+﻿#Study ID	GSE57908
+#Platform ID	GPL1339
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	 
+#Add N Samples	11
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM1397320	Control	S. aureus	SA113						
+GSM1397321	Control	S. aureus	SA113						
+GSM1397322	Control	S. aureus	SA113						
+GSM1397323	Test	S. aureus	SA113			Daptomycin	100-fold MIC	10 min	Bactericidal,MRSA
+GSM1397324	Test	S. aureus	SA113			Daptomycin	100-fold MIC	10 min	Bactericidal,MRSA
+GSM1397325	Test	S. aureus	SA113			Daptomycin	100-fold MIC	10 min	Bactericidal,MRSA
+GSM1397326	Control	S. aureus	SA113						
+GSM1397327	Control	S. aureus	SA113						
+GSM1397328	Control	S. aureus	SA113						
+GSM1397329	Test	S. aureus	SA113			Daptomycin	100-fold MIC	3 hours	Bactericidal,MRSA
+GSM1397330	Test	S. aureus	SA113			Daptomycin	100-fold MIC	3 hours	Bactericidal,MRSA
+GSM1397331	Test	S. aureus	SA113			Daptomycin	100-fold MIC	3 hours	Bactericidal,MRSA

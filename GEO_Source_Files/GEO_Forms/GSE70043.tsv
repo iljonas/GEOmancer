@@ -1,0 +1,185 @@
+#Study ID	GSE70043
+#Platform ID	GPL20586
+#Platform Data Column Numbers	3
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	
+#Add N Samples	175
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM1715965	Control	S. aureus	HG001	log	RMPI				
+GSM1715966	Control	S. aureus	HG001	log	RPMI				
+GSM1715967	Control	S. aureus	HG001	2 hour stationary	RPMI				
+GSM1715968	Control	S. aureus	HG001	log	TSB				
+GSM1715969	Control	S. aureus	HG001	log	TSB				
+GSM1715970	Control	S. aureus	HG001	log	TSB				
+GSM1715971	Control	S. aureus	HG001	log	TSB				
+GSM1715972	Control	S. aureus	HG001	log	TSB				
+GSM1715973	Control	S. aureus	HG001	log	TSB				
+GSM1715974	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715975	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715976	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715977	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1715978	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1715979	Control	S. aureus	HG001	log	TSB				
+GSM1715980	Control	S. aureus	HG001	log	TSB				
+GSM1715981	Control	S. aureus	HG001	log	TSB				
+GSM1715982	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715983	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715984	Control	S. aureus	HG001	2 hour stationary	TSB				
+GSM1715985	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1715986	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1715987	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1715988	Control	S. aureus	HG001	log	pMEM				
+GSM1715989	Control	S. aureus	HG001	log	pMEM				
+GSM1715990	Control	S. aureus	HG001	log	pMEM				
+GSM1715991	Control	S. aureus	HG001	2 hour stationary	pMEM				
+GSM1715992	Control	S. aureus	HG001	2 hour stationary	pMEM				
+GSM1715993	Control	S. aureus	HG001	2 hour stationary	pMEM				
+GSM1715994	Control	S. aureus	HG001	4 hour stationary	pMEM				
+GSM1715995	Control	S. aureus	HG001	4 hour stationary	pMEM				
+GSM1715996	Control	S. aureus	HG001	4 hour stationary	pMEM				
+GSM1715997	Control	S. aureus	HG001	log	CDM				
+GSM1715998	Control	S. aureus	HG001	log	CDM				
+GSM1715999	Control	S. aureus	HG001	log	CDM				
+GSM1716000	Control	S. aureus	HG001	2 hour stationary	CDM				
+GSM1716001	Control	S. aureus	HG001	2 hour stationary	CDM				
+GSM1716002	Control	S. aureus	HG001	2 hour stationary	CDM				
+GSM1716003	Control	S. aureus	HG001	2 hour stationary	CDM				
+GSM1716004	Control	S. aureus	HG001	4 hour stationary	CDM				
+GSM1716005	Control	S. aureus	HG001	4 hour stationary	CDM				
+GSM1716006	Control	S. aureus	HG001	4 hour stationary	CDM				
+GSM1716007	Control	S. aureus	HG001	log	Plasma				
+GSM1716008	Control	S. aureus	HG001	log	Plasma				
+GSM1716009	Control	S. aureus	HG001	log	Plasma				
+GSM1716010	Control	S. aureus	HG001	4 hour stationary	Plasma				
+GSM1716011	Control	S. aureus	HG001	4 hour stationary	Plasma				
+GSM1716012	Control	S. aureus	HG001	4 hour stationary	Plasma				
+GSM1716013	Control	S. aureus	HG001	log	TSB				
+GSM1716014	Control	S. aureus	HG001	log	TSB				
+GSM1716015	Control	S. aureus	HG001	log	TSB				
+GSM1716016	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716017	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716018	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716019	Test	S. aureus	HG001	log	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716020	Test	S. aureus	HG001	log	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716021	Test	S. aureus	HG001	log	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716022	Test	S. aureus	HG001	4 hour stationary	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716023	Test	S. aureus	HG001	4 hour stationary	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716024	Test	S. aureus	HG001	4 hour stationary	TSB	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716025	Test	S. aureus	HG001	log	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716026	Test	S. aureus	HG001	log	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716027	Test	S. aureus	HG001	log	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716028	Test	S. aureus	HG001	4 hour stationary	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716029	Test	S. aureus	HG001	4 hour stationary	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716030	Test	S. aureus	HG001	4 hour stationary	TSB	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716031	Control	S. aureus	HG001	log	RPMI				
+GSM1716032	Control	S. aureus	HG001	log	RPMI				
+GSM1716033	Control	S. aureus	HG001	log	RPMI				
+GSM1716034	Control	S. aureus	HG001	4 hour stationary	RPMI				
+GSM1716035	Control	S. aureus	HG001	4 hour stationary	RPMI				
+GSM1716036	Control	S. aureus	HG001	4 hour stationary	RPMI				
+GSM1716037	Test	S. aureus	HG001	log	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716038	Test	S. aureus	HG001	log	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716039	Test	S. aureus	HG001	log	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716040	Test	S. aureus	HG001	4 hour stationary	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716041	Test	S. aureus	HG001	4 hour stationary	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716042	Test	S. aureus	HG001	4 hour stationary	RPMI	Flucloxacillin	0.02 μg/mL		Bactericidal,MSSA
+GSM1716043	Test	S. aureus	HG001	log	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716044	Test	S. aureus	HG001	log	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716045	Test	S. aureus	HG001	log	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716046	Test	S. aureus	HG001	4 hour stationary	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716047	Test	S. aureus	HG001	4 hour stationary	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716048	Test	S. aureus	HG001	4 hour stationary	RPMI	Vancomycin	0.63 μg/mL		Bactericidal,MRSA
+GSM1716049	Test	S. aureus	HG001	log	TSB	Colistin	50 µg/mL		Bactericidal,MRSA
+GSM1716050	Test	S. aureus	HG001	log	TSB	Colistin	50 µg/mL		Bactericidal,MRSA
+GSM1716051	Test	S. aureus	HG001	log	TSB	Colistin	50 µg/mL		Bactericidal,MRSA
+GSM1716052	Control	S. aureus	HG001	log	pMEM				
+GSM1716053	Control	S. aureus	HG001	log	pMEM				
+GSM1716054	Control	S. aureus	HG001	log	pMEM				
+GSM1716055	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	1 hour	
+GSM1716056	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	1 hour	
+GSM1716057	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	1 hour	
+GSM1716058	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	2.5 hour	
+GSM1716059	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	2.5 hour	
+GSM1716060	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	2.5 hour	
+GSM1716061	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	6.5 hour	
+GSM1716062	Test	S. aureus	HG001	log	RPMI/FCS	CO2	5%	6.5 hour	
+GSM1716063	Test	S. aureus	HG001	log	pMEM	Anaerobic		2.5 hour	
+GSM1716064	Test	S. aureus	HG001	log	pMEM	Anaerobic		2.5 hour	
+GSM1716065	Test	S. aureus	HG001	log	pMEM	Anaerobic		2.5 hour	
+GSM1716066	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		2.5 hour	
+GSM1716067	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		2.5 hour	
+GSM1716068	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		2.5 hour	
+GSM1716069	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		6.5 hour	
+GSM1716070	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		6.5 hour	
+GSM1716071	Test	S. aureus	HG001	log	RPMI/FCS	S9 Internalization		6.5 hour	
+GSM1716072	Test	S. aureus	HG001	log	RPMI/FCS	Non-adherent	MOI 25	1 hour	
+GSM1716073	Test	S. aureus	HG001	log	RPMI/FCS	Non-adherent	MOI 25	1 hour	
+GSM1716074	Test	S. aureus	HG001	log	RPMI/FCS	Non-adherent	MOI 25	1 hour	
+GSM1716075	Test	S. aureus	HG001	log	RPMI/FCS	Non-adherent	MOI 50	1 hour	
+GSM1716076	Test	S. aureus	HG001	log	RPMI/FCS	Non-adherent	MOI 50	1 hour	
+GSM1716077	Control	S. aureus	HG001	log	TSB				
+GSM1716078	Control	S. aureus	HG001	log	TSB				
+GSM1716079	Control	S. aureus	HG001	log	TSB				
+GSM1716080	Test	S. aureus	HG001	log	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716081	Test	S. aureus	HG001	log	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716082	Test	S. aureus	HG001	log	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716083	Test	S. aureus	HG001	log	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716084	Test	S. aureus	HG001	log	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716085	Test	S. aureus	HG001	log	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716086	Test	S. aureus	HG001	log	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716087	Test	S. aureus	HG001	log	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716088	Test	S. aureus	HG001	log	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716089	Test	S. aureus	HG001	log	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716090	Test	S. aureus	HG001	log	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716091	Test	S. aureus	HG001	log	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716092	Test	S. aureus	HG001	log	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716093	Test	S. aureus	HG001	log	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716094	Test	S. aureus	HG001	log	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716095	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716096	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716097	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716098	Test	S. aureus	HG001	4 hour stationary	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716099	Test	S. aureus	HG001	4 hour stationary	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716100	Test	S. aureus	HG001	4 hour stationary	TSB	Ciprofloxacin	0.10 μg/mL		Bactericidal,MRSA
+GSM1716101	Test	S. aureus	HG001	4 hour stationary	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716102	Test	S. aureus	HG001	4 hour stationary	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716103	Test	S. aureus	HG001	4 hour stationary	TSB	Clindamycin	0.01 μg/mL		Bacteriostatic,MSSA
+GSM1716104	Test	S. aureus	HG001	4 hour stationary	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716105	Test	S. aureus	HG001	4 hour stationary	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716106	Test	S. aureus	HG001	4 hour stationary	TSB	Erythromycin	0.05 μg/mL		Bacteriostatic,MSSA
+GSM1716107	Test	S. aureus	HG001	4 hour stationary	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716108	Test	S. aureus	HG001	4 hour stationary	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716109	Test	S. aureus	HG001	4 hour stationary	TSB	Linezolid	0.10 μg/mL		Bacteriostatic,MRSA
+GSM1716110	Test	S. aureus	HG001	4 hour stationary	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716111	Test	S. aureus	HG001	4 hour stationary	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716112	Test	S. aureus	HG001	4 hour stationary	TSB	Trimethoprim-sulfamethoxazole	0.75 μg/mL		Bacteriostatic,MSSA
+GSM1716113	Control	S. aureus	HG001	log	RPMI/FCS				
+GSM1716114	Control	S. aureus	HG001	log	RPMI/FCS				
+GSM1716115	Control	S. aureus	HG001	log	RPMI/FCS				
+GSM1716116	Test	S. aureus	HG001	log	RPMI/FCS	THP-1 Internalization		2 hour	
+GSM1716117	Test	S. aureus	HG001	log	RPMI/FCS	THP-1 Internalization		2 hour	
+GSM1716118	Test	S. aureus	HG001	log	RPMI/FCS	THP-1 Internalization		2 hour	
+GSM1716119	Test	S. aureus	HG001	log	RPMI/FCS	THP-1 Internalization		6 hour	
+GSM1716120	Test	S. aureus	HG001	log	RPMI/FCS	THP-1 Internalization		6 hour	
+GSM1716121	Control	S. aureus	HG001	log	TSB				
+GSM1716122	Control	S. aureus	HG001	log	TSB				
+GSM1716123	Test	S. aureus	HG001	log	TSB	delta rho mutant			
+GSM1716124	Test	S. aureus	HG001	log	TSB	delta rho mutant			
+GSM1716125	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716126	Control	S. aureus	HG001	4 hour stationary	TSB				
+GSM1716127	Test	S. aureus	HG001	4 hour stationary	TSB	delta rho mutant			
+GSM1716128	Test	S. aureus	HG001	4 hour stationary	TSB	delta rho mutant			
+GSM1716129	Control	S. aureus	HG001	log	RPMI				
+GSM1716130	Control	S. aureus	HG001	log	RPMI				
+GSM1716131	Test	S. aureus	HG001	log	RPMI	delta rho mutant			
+GSM1716132	Test	S. aureus	HG001	log	RPMI	delta rho mutant			
+GSM1716133	Control	S. aureus	HG001	4 hour stationary	RPMI				
+GSM1716134	Control	S. aureus	HG001	4 hour stationary	RPMI				
+GSM1716135	Test	S. aureus	HG001	4 hour stationary	RPMI	delta rho mutant			
+GSM1716136	Test	S. aureus	HG001	4 hour stationary	RPMI	delta rho mutant			
+GSM1716137	Neither	S. aureus	HG001	stationary	TSB	100x Dilution			Genomic DNA Extraction
+GSM1716138	Neither	S. aureus	HG001	stationary	TSB	100x Dilution			Genomic DNA Extraction
+GSM1716139	Neither	S. aureus	HG001	stationary	TSB	100x Dilution			Genomic DNA Extraction
+GSM1716140	Neither	S. aureus	HG001	stationary	TSB	100x Dilution			Genomic DNA Extraction

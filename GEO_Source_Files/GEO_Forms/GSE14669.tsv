@@ -1,0 +1,21 @@
+﻿#Study ID	GSE14669
+#Platform ID	GPL1339
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	 
+#Add N Samples	11
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM366041	Control	S. aureus	NCTC 8325-4	Mid log					
+GSM366042	Control	S. aureus	NCTC 8325-4	Mid log					
+GSM366043	Control	S. aureus	NCTC 8325-4	Mid log					
+GSM366056	Test	S. aureus	NCTC 8325-4	Mid log		Ramoplanin	4 µg/mL	30 min	Bactericidal,MRSA
+GSM366073	Test	S. aureus	NCTC 8325-4	Mid log		Ramoplanin	4 µg/mL	30 min	Bactericidal,MRSA
+GSM366074	Test	S. aureus	NCTC 8325-4	Mid log		Ramoplanin	4 µg/mL	30 min	Bactericidal,MRSA
+GSM366075	Control	S. aureus	RSPA16	Mid log					
+GSM366076	Control	S. aureus	RSPA16	Mid log					
+GSM366077	Control	S. aureus	RSPA16	Mid log					
+GSM366078	Test	S. aureus	RSPA16	Mid log		Ramoplanin	12 µg/mL	30 min	Bactericidal,MRSA
+GSM366079	Test	S. aureus	RSPA16	Mid log		Ramoplanin	12 µg/mL	30 min	Bactericidal,MRSA
+GSM366080	Test	S. aureus	RSPA16	Mid log		Ramoplanin	12 µg/mL	30 min	Bactericidal,MRSA

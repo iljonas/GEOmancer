@@ -1,0 +1,46 @@
+#Study ID	GSE15394
+#Platform ID	GPL1339
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	 
+#Add N Samples	36
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM386347	Control	S. aureus	ATTC 29213		20 min				
+GSM386348	Test	S. aureus	ATTC 29213		20 min	Fosformycin	1 µg/mL	20 min	Bactericidal,MRSA
+GSM386349	Test	S. aureus	ATTC 29213		20 min	Fosformycin	1 µg/mL	20 min	Bactericidal,MRSA
+GSM386350	Test	S. aureus	ATTC 29213		40 min	Fosformycin	1 µg/mL	40 min	Bactericidal,MRSA
+GSM386351	Test	S. aureus	ATTC 29213		40 min	Fosformycin	4 µg/mL	40 min	Bactericidal,MRSA
+GSM386352	Control	S. aureus	ATTC 29213		10 min				
+GSM386353	Test	S. aureus	ATTC 29213		40 min	Fosformycin	4 µg/mL	40 min	Bactericidal,MRSA
+GSM386354	Control	S. aureus	ATTC 29213		0 min				
+GSM386355	Test	S. aureus	ATTC 29213		10 min	Fosformycin	4 µg/mL	10 min	Bactericidal,MRSA
+GSM386356	Control	S. aureus	ATTC 29213		0 min				
+GSM386357	Control	S. aureus	ATTC 29213		10 min				
+GSM386358	Control	S. aureus	ATTC 29213		20 min				
+GSM386359	Control	S. aureus	ATTC 29213		40min				
+GSM386360	Test	S. aureus	ATTC 29213		10 min	Fosformycin	1 µg/mL	10 min	Bactericidal,MRSA
+GSM386361	Test	S. aureus	ATTC 29213		20 min	Fosformycin	1 µg/mL	20 min	Bactericidal,MRSA
+GSM386362	Test	S. aureus	ATTC 29213		40 min	Fosformycin	1 µg/mL	40 min	Bactericidal,MRSA
+GSM386363	Test	S. aureus	ATTC 29213		10 min	Fosformycin	4 µg/mL	10 min	Bactericidal,MRSA
+GSM386364	Test	S. aureus	ATTC 29213		20 min	Fosformycin	4 µg/mL	20 min	Bactericidal,MRSA
+GSM386365	Test	S. aureus	ATTC 29213		40 min	Fosformycin	4 µg/mL	40 min	Bactericidal,MRSA
+GSM386366	Test	S. aureus	ATTC 29213		40 min	Fosformycin	4 µg/mL	40 min	Bactericidal,MRSA
+GSM386367	Control	S. aureus	ATTC 29213		10 min				
+GSM386368	Control	S. aureus	ATTC 29213		20 min				
+GSM386369	Control	S. aureus	ATTC 29213		40 min				
+GSM386370	Test	S. aureus	ATTC 29213		10 min	Fosformycin	1 µg/mL	10 min	Bactericidal,MRSA
+GSM386371	Test	S. aureus	ATTC 29213		20 min	Fosformycin	1 µg/mL	20 min	Bactericidal,MRSA
+GSM386372	Test	S. aureus	ATTC 29213		40 min	Fosformycin	1 µg/mL	40 min	Bactericidal,MRSA
+GSM386373	Test	S. aureus	ATTC 29213		10 min	Fosformycin	4 µg/mL	10 min	Bactericidal,MRSA
+GSM386374	Test	S. aureus	ATTC 29213		20 min	Fosformycin	4 µg/mL	20 min	Bactericidal,MRSA
+GSM386375	Test	S. aureus	ATTC 29213		40 min	Fosformycin	4 µg/mL	40 min	Bactericidal,MRSA
+GSM386376	Control	S. aureus	ATTC 29213		0 min				
+GSM386377	Control	S. aureus	ATTC 29213		10 min				
+GSM386378	Control	S. aureus	ATTC 29213		20 min				
+GSM386379	Control	S. aureus	ATTC 29213		40 min				
+GSM386380	Test	S. aureus	ATTC 29213		10 min	Fosformycin	1 µg/mL	10 min	Bactericidal,MRSA
+GSM386381	Test	S. aureus	ATTC 29213		20 min	Fosformycin	1 µg/mL	20 min	Bactericidal,MRSA
+GSM386382	Test	S. aureus	ATTC 29213		40 min	Fosformycin	1 µg/mL	40 min	Bactericidal,MRSA
+GSM386383	Test	S. aureus	ATTC 29213		20 min	Fosformycin	4 µg/mL	20 min	Bactericidal,MRSA

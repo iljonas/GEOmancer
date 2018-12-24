@@ -1,0 +1,13 @@
+#Study ID	GSE12210
+#Platform ID	GPL7072
+#Platform Data Column Numbers	17:23
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	,
+#Add N Samples	3
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM306855	Neither	S. aureus	SH1000			Fusidic Acid	2 µg/mL	15 min	Bacteriostatic,MRSA
+GSM307131	Neither	S. aureus	SH1000			Fusidic Acid	2 µg/mL	15 min	Bacteriostatic,MRSA
+GSM307132	Neither	S. aureus	SH1000			Fusidic Acid	2 µg/mL	15 min	Bacteriostatic,MRSA
+GSM307133	Neither	S. aureus	SH1000			Fusidic Acid	2 µg/mL	15 min	Bacteriostatic,MRSA

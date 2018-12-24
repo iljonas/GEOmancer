@@ -1,0 +1,13 @@
+﻿#Study ID	GSE30743
+#Platform ID	GPL13937
+#Platform Data Column Numbers	6
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	,
+#Add N Samples	3
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM762850	Neither	S. aureus	COL		OD 0.5	Mupirocin	0.03 µg/mL	10 min	Bacteriostatic,MRSA
+GSM762851	Neither	S. aureus	COL		OD 0.5	Mupirocin	0.03 µg/mL	10 min	Bacteriostatic,MRSA
+GSM762852	Neither	S. aureus	COL		OD 0.5	Mupirocin	0.03 µg/mL	10 min	Bacteriostatic,MRSA
+GSM762853	Neither	S. aureus	COL		OD 0.5	Mupirocin	0.03 µg/mL	10 min	Bacteriostatic,MRSA

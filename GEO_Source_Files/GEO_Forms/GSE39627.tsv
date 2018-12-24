@@ -1,0 +1,27 @@
+#Study ID	GSE39627
+#Platform ID	GPL1339
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	 
+#Add N Samples	17
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM973371	Control	S. aureus	USA300	OD 0.2					
+GSM973372	Control	S. aureus	USA300	OD 0.2					
+GSM973373	Control	S. aureus	USA300	OD 0.2					
+GSM973374	Control	S. aureus	USA300	OD 0.2	Mutation: vraS				
+GSM973375	Control	S. aureus	USA300	OD 0.2	Mutation: vraS				
+GSM973376	Control	S. aureus	USA300	OD 0.2	Mutation: vraS				
+GSM973377	Control	S. aureus	USA300	OD 0.2	Mutation: vraT				
+GSM973378	Control	S. aureus	USA300	OD 0.2	Mutation: vraT				
+GSM973379	Control	S. aureus	USA300	OD 0.2	Mutation: vraT				
+GSM973380	Test	S. aureus	USA300	OD 0.2		Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973381	Test	S. aureus	USA300	OD 0.2		Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973382	Test	S. aureus	USA300	OD 0.2		Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973383	Test	S. aureus	USA300	OD 0.2	Mutation: vraS	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973384	Test	S. aureus	USA300	OD 0.2	Mutation: vraS	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973385	Test	S. aureus	USA300	OD 0.2	Mutation: vraS	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973386	Test	S. aureus	USA300	OD 0.2	Mutation: vraT	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973387	Test	S. aureus	USA300	OD 0.2	Mutation: vraT	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA
+GSM973388	Test	S. aureus	USA300	OD 0.2	Mutation: vraT	Oxacillin	1 μg/mL	1 hour	Bactericidal,MSSA

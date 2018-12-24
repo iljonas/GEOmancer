@@ -1,0 +1,28 @@
+﻿#Study ID	GSE43643
+#Platform ID	GPL16176
+#Platform Data Column Numbers	4
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	
+#Add N Samples	18
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM1062052	Neither	S. aureus	deltaIP		OD 1.0	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062053	Neither	S. aureus	deltaIP		OD 1.0|Mutations:vraS	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062054	Neither	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062055	Neither	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062056	Neither	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR,rpoB	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062057	Neither	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR,rpoB,fdh2	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062058	Neither	S. aureus	Mu50		OD 1.0|Mutations:vraS,msrR,graR,rpoB,fdh2	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062059	Neither	S. aureus	deltaIP		OD 2.0	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062060	Neither	S. aureus	deltaIP		OD 2.0|Mutations:vraS	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062061	Neither	S. aureus	deltaIP		OD 2.0|Mutations:vraS,msrR	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062062	Neither	S. aureus	deltaIP		OD 2.0|Mutations:vraS,msrR,graR	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062063	Neither	S. aureus	deltaIP		OD 2.0|Mutations:vraS,msrR,graR,rpoB	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062064	Neither	S. aureus	deltaIP		OD 2.0|Mutations:vraS,msrR,graR,rpoB,fdh2	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062065	Neither	S. aureus	Mu50		OD 2.0|Mutations:vraS,msrR,graR,rpoB,fdh2	Vancomycin	10 μg/mL	10 min	Bactericidal,MRSA
+GSM1062066	Control	S. aureus	deltaIP		OD 1.0|Mutations:vraS				
+GSM1062067	Control	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR				
+GSM1062068	Control	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR				
+GSM1062069	Control	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR,rpoB				
+GSM1062070	Control	S. aureus	deltaIP		OD 1.0|Mutations:vraS,msrR,graR,rpoB,fdh2				

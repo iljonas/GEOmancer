@@ -1,0 +1,72 @@
+#Study ID	GSE26358
+#Platform ID	GPL10597
+#Platform Data Column Numbers	10:17
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	,
+#Add N Samples	62
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM646716	Control	S. aureus	3577	early log					
+GSM646718	Control	S. aureus	5612	early log					
+GSM646722	Control	S. aureus	6939	early log					
+GSM646723	Control	S. aureus	7210	early log					
+GSM646724	Control	S. aureus	3577	mid log					
+GSM646725	Control	S. aureus	5612	mid log					
+GSM646729	Control	S. aureus	6939	mid log					
+GSM646730	Control	S. aureus	7210	mid log					
+GSM646731	Control	S. aureus	3577	late log					
+GSM646732	Control	S. aureus	5612	late log					
+GSM646733	Control	S. aureus	6939	late log					
+GSM646734	Control	S. aureus	7210	late log					
+GSM646735	Control	S. aureus	3577	early stationary					
+GSM646736	Control	S. aureus	5612	early stationary					
+GSM646737	Control	S. aureus	6939	early stationary					
+GSM646738	Control	S. aureus	7210	early stationary					
+GSM646741	Control	S. aureus	3577	early stationary					
+GSM646742	Control	S. aureus	5612	early stationary					
+GSM646743	Control	S. aureus	6939	early stationary					
+GSM646744	Control	S. aureus	7210	early stationary					
+GSM646745	Control	S. aureus	3577	early log					
+GSM646796	Control	S. aureus	5612	early log					
+GSM646797	Control	S. aureus	6939	early log					
+GSM646798	Control	S. aureus	7210	early log					
+GSM646799	Control	S. aureus	3577	mid log					
+GSM646800	Control	S. aureus	5612	mid log					
+GSM646801	Control	S. aureus	6939	mid log					
+GSM646802	Control	S. aureus	7210	mid log					
+GSM646803	Test	S. aureus	3577	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM646804	Control	S. aureus	3577	late log					
+GSM646805	Control	S. aureus	5612	late log					
+GSM646806	Test	S. aureus	3577	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM646807	Control	S. aureus	6939	late log					
+GSM646808	Control	S. aureus	7210	late log					
+GSM646809	Test	S. aureus	6939	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM646810	Test	S. aureus	5612	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM646811	Test	S. aureus	7210	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM646812	Test	S. aureus	5612	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM646813	Test	S. aureus	6939	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM646814	Test	S. aureus	7210	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM646815	Test	S. aureus	3577	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM646816	Test	S. aureus	3577	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM646817	Test	S. aureus	5612	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM646818	Test	S. aureus	6939	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM646819	Test	S. aureus	7210	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM646820	Test	S. aureus	5612	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM646821	Test	S. aureus	6939	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM646822	Test	S. aureus	7210	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM647159	Test	S. aureus	3577	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM647166	Test	S. aureus	5612	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM647167	Test	S. aureus	6939	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM647174	Test	S. aureus	7210	early stationary		Linezolid		120 min	Bacteriostatic,MRSA
+GSM647175	Test	S. aureus	3577	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM647182	Test	S. aureus	5612	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM647183	Test	S. aureus	7210	late log		Linezolid		90 min	Bacteriostatic,MRSA
+GSM647188	Test	S. aureus	5612	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM647189	Test	S. aureus	6939	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM647190	Test	S. aureus	7210	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM647191	Test	S. aureus	3577	mid log		Linezolid		60 min	Bacteriostatic,MRSA
+GSM647196	Test	S. aureus	3577	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM647197	Test	S. aureus	5612	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM647198	Test	S. aureus	6939	early log		Linezolid		30 min	Bacteriostatic,MRSA
+GSM647199	Test	S. aureus	7210	early log		Linezolid		30 min	Bacteriostatic,MRSA

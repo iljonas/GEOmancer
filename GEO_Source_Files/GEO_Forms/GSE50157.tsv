@@ -1,0 +1,15 @@
+#Study ID	GSE50157
+#Platform ID	GPL1339
+#Platform Data Column Numbers	2
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	 
+#Add N Samples	5
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM1214812	Control	S. aureus	HG001	log	OD 0.6				
+GSM1214813	Control	S. aureus	HG001	log	OD 0.6				
+GSM1214814	Control	S. aureus	HG001	log	OD 0.6				
+GSM1214815	Test	S. aureus	HG001	log	OD 0.6	Novobiocin	0.5 μg/mL	1 hour	Bacteriostatic,MRSA
+GSM1214816	Test	S. aureus	HG001	log	OD 0.6	Novobiocin	0.5 μg/mL	1 hour	Bacteriostatic,MRSA
+GSM1214817	Test	S. aureus	HG001	log	OD 0.6	Novobiocin	0.5 μg/mL	1 hour	Bacteriostatic,MRSA

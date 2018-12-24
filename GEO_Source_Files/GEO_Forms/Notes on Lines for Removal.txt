@@ -1,0 +1,14 @@
+GSE70043, consider for removal, if possible:
+	plasma
+	CO2
+	Anaerobic
+	S9 Internalization
+	Non-adherent
+	RPMI/FCS
+	delta rho mutant
+	100x dilution
+		really just 113 and on
+
+GSE9494, consider for removal, if possible:
+	GSM240783
+	GSM240784

@@ -1,4 +1,4 @@
-#Study ID	GSE6258
+﻿#Study ID	GSE6258
 #Platform ID	GPL4324
 #Platform Data Column Numbers	17:23
 #Outside study controls	
@@ -7,16 +7,16 @@
 #In-column Delimiter	,
 #Add N Samples	12
 Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
-GSM143514	Test	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143527	Test	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143528	Test	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143529	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143530	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
-GSM143531	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143532	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
-GSM143533	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
-GSM143534	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143535	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
-GSM143536	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143537	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
-GSM143538	Neither	S aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143514	Test	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143527	Test	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143528	Test	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143529	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143530	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
+GSM143531	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143532	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
+GSM143533	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
+GSM143534	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143535	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	120 min	Bactericidal,MRSA
+GSM143536	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143537	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA
+GSM143538	Neither	S. aureus	8325	early log		Ciprofloxacin	0.8 μg/mL	30 min	Bactericidal,MRSA

@@ -1,0 +1,15 @@
+﻿#Study ID	GSE9494
+#Platform ID	GPL6059
+#Platform Data Column Numbers	8
+#Outside study controls	
+#Difference Calculation	Subtraction
+#Comparison Calculation	Mean
+#In-column Delimiter	
+#Add N Samples	5
+Sample_ID	Group	Species	Strain	Growth_Phase	Other_General	Treatment	Dosage	Exposure_Time	Other_Treatment
+GSM240779	Neither	S. aureus	ATCC 29213			Daptomycin	4 µg/mL	15 min	Bactericidal,MRSA
+GSM240783	Neither	S. aureus	ATCC 29213			CCCP	2 µg/mL	15 min
+GSM240784	Neither	S. aureus	ATCC 29213			Nisin	20 µg/mL	15 min
+GSM240845	Neither	S. aureus	SH1000			Oxacillin	1.2 µg/mL	15 min	Bactericidal,MSSA
+GSM240846	Neither	S. aureus	ATCC 29213			Vancomycin	10 µg/mL	15 min	Bactericidal,MRSA
+GSM240847	Neither	S. aureus	N315-KVR mutant			Daptomycin	2 µg/mL	15 min	Bactericidal,MRSA
