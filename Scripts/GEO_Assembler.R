@@ -53,14 +53,17 @@ setSeries <- function(seriesID, m.samples){
      }
      
      temp.series <- read.csv(gzfile(series.path), comment.char = "!", sep = '\t', 
-                             na.strings = c("", "null"), stringsAsFactors = FALSE)
-     temp.series <- temp.series[, order(names(temp.series))]
-     temp.series <- select(temp.series, ID_REF, everything())
-     m.samples <- m.samples[order(row.names(m.samples)), ]
-
+                             na.strings = c("", "null"), stringsAsFactors = FALSE) %>%
+          arrange(names(temp.series)) %>%
+          select(ID_REF, which(sapply(row.names(m.samples), function(x){ x %in% names(temp.series)[-1] })))
+     #temp.series <- temp.series[, order(names(temp.series))]
+     #temp.series <- select(temp.series, ID_REF, everything())
+     #m.samples <- m.samples[order(row.names(m.samples)), ]
+     m.samples <- arrange(m.samples, row.names(m.samples))
+     
      if(!(FALSE %in%
-          (sapply(names(temp.series)[-1], function(x){trim(x)}) 
-           == sapply(row.names(m.samples), function(x){trim(x)})))) {
+          sapply(names(temp.series)[-1], function(x){ trim(x) }) == sapply(row.names(m.samples), function(x){ trim(x) }))){
+          
           names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(toupper(x), collapse = "|")})
           sep.num <- ncol(m.samples) - 1
           for (i in 2:ncol(temp.series)){
