@@ -9,7 +9,7 @@ logDiv <- function(x, y){log(x / y, 2)}
 
 folderPath <- function(){
      userID <- Sys.info()["user"]
-     folder <- file.path('C:', 'Users', userID, 'Documents', 'GEOmancer')
+     file.path('C:', 'Users', userID, 'Documents', 'GEOmancer')
 }
 
 comparisonCalc <- function(calc.source){
@@ -26,7 +26,7 @@ clipEnds <- function(cName, exp1, exp2){
 
 setMeta.study <- function(source){
      temp.meta <- read.table(source, sep = "\t", 
-                             comment.char = "", fill = TRUE, stringsAsFactors = FALSE)
+                             comment.char = "", fill = TRUE, stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM")
      colnames(temp.meta) <- c("Field", "Description")
      temp.meta <- subset(temp.meta, grepl("#", Field))
      temp.meta$Field <- gsub("#","",temp.meta$Field)
@@ -34,7 +34,9 @@ setMeta.study <- function(source){
 }
 
 setMeta.samples <- function(source){
-     temp.meta <- read.csv(source, comment.char = "#", sep = '\t', na.strings = c('', 'NA'), stringsAsFactors = FALSE)
+     temp.meta <- read.csv(source, comment.char = "#", sep = '\t', 
+                           na.strings = c('', 'NA'), stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM") %>% 
+          arrange(Sample_ID)
      row.names(temp.meta) <- temp.meta$Sample_ID
      return(temp.meta[-1])
 }
@@ -54,15 +56,11 @@ setSeries <- function(seriesID, m.samples){
      
      temp.series <- read.csv(gzfile(series.path), comment.char = "!", sep = '\t', 
                              na.strings = c("", "null"), stringsAsFactors = FALSE) %>%
-          arrange(names(temp.series)) %>%
-          select(ID_REF, which(sapply(row.names(m.samples), function(x){ x %in% names(temp.series)[-1] })))
-     #temp.series <- temp.series[, order(names(temp.series))]
-     #temp.series <- select(temp.series, ID_REF, everything())
-     #m.samples <- m.samples[order(row.names(m.samples)), ]
-     m.samples <- arrange(m.samples, row.names(m.samples))
+          select(sort(everything())) %>%
+          select(ID_REF, which(sapply(names(temp.series), function(x){ x %in% row.names(m.samples) })))
      
      if(!(FALSE %in%
-          sapply(names(temp.series)[-1], function(x){ trim(x) }) == sapply(row.names(m.samples), function(x){ trim(x) }))){
+          (sapply(names(temp.series)[-1], function(x){ trim(x) }) == sapply(row.names(m.samples), function(x){ trim(x) })))){
           
           names(temp.series)[-1] <- apply(m.samples, 1, FUN = function(x){paste(toupper(x), collapse = "|")})
           sep.num <- ncol(m.samples) - 1
